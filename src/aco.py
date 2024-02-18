@@ -31,6 +31,8 @@ class ACO:
         # Ant(graph) <- Create an ant object, passing in the Graph object given in the class constructor
         # for _ in range(num_ants) <- creates an ant object 'num_ants' times
         # [Ant(graph) for _ in range(num_ants)] <- create an ant object for total number of ants
+
+        # Creates an ant object equal to the number in num_ants
         self.ants: List[Ant] = [Ant(graph) for _ in range(num_ants)]
 
 

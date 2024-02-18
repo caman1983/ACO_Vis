@@ -1,8 +1,12 @@
 import pygame
 import sys
 
+import ant
+from src.graph import Graph
+from src.node import Node
 
-def main():
+
+def foo():
     # Initialises pygame library
     pygame.init()
 
@@ -28,6 +32,31 @@ def main():
 
     pygame.quit()
     sys.exit()
+
+
+def main():
+    graph = Graph()
+
+    node1 = Node("Node1")
+    node2 = Node("Node2")
+    node3 = Node("Node3")
+
+    # populate node dictionary
+    graph.add_node(node1)
+    graph.add_node(node2)
+    graph.add_node(node3)
+    graph.print_node_dict()
+
+    graph.add_edge("Node1", "Node2", 10)
+    graph.add_edge("Node1", "Node3", 14)
+
+    connected_edges = graph.get_connected_nodes("Node1")
+    print(connected_edges)
+
+    ant1 = ant.Ant(graph, "Node1")
+    probability = ant1.select_next_node()
+    print(probability)
+    # IT FUCKING WORKS
 
 
 if __name__ == '__main__':
