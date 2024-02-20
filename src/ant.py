@@ -1,3 +1,5 @@
+import random
+
 from src import aco
 from src.graph import Graph
 
@@ -28,15 +30,14 @@ class Ant:
 
         # set to record unvisited nodes, starts with full list of all nodes in graph - starting node
         self.unvisited_nodes = set(graph.nodes_dict) - {start_node}
-        print("For debugging, set of unvisited nodes:", self.unvisited_nodes)
+        # print("For debugging, set of unvisited nodes:", self.unvisited_nodes)
 
-    # todo: CURRENTLY ONLY RETURNS PROBABILITY OF TRAVERSING TO NODE IN NUMERATOR
+
     # probability function
     # traverse to next node from current node, based on todo: finish and explain
-    # todo: ask chatGPT if this function is written ok REMOVE BEFORE WEDNESDAY
-    def select_next_node(self) -> float:
+    def get_probabilities(self) -> list[tuple[str, float]]:
         probabilities = []
-
+        total = 0
         # todo: hardcoded for now, amend later
         alpha = 1
         beta = 1
@@ -46,38 +47,41 @@ class Ant:
         traversable_nodes = self.graph.get_connected_nodes(self.current_node)
 
         # iterate through list of traversal nodes
-        print(self.unvisited_nodes)
         for node in traversable_nodes:
-            print(node, "for debugging.")
 
             # if current node has not been visited
             if node in self.unvisited_nodes:
-
                 # get pheromone level between current node and potential next node
                 # todo: ensure this works as intended, what if the order is not as expected
                 pheromone_level = self.graph.get_pheromone_level((self.current_node, node))
-
                 # get distance metric between current node and potential next node
                 distance = self.graph.get_distance((self.current_node, node))
 
                 # eta = inverse of distance
                 distance_inverse = 1 / distance
                 # todo better implement
-                if distance < 0:
-                    print(distance)
+                if distance <= 0:
                     raise Exception("Critical error: Distance between nodes cannot be less then zero")
 
-                else:
-                    # store attractiveness of selected node as first item in list, then attractiveness of every other node as every other element
+                # times pheromone level by inverse of distance
+                node_potential = pheromone_level * distance_inverse
+                probabilities.append((node, node_potential))
 
-                    # times pheromone level by inverse of distance
+                # summation of all node probabilities??
+                total += node_potential
 
-                    prob = pheromone_level * distance_inverse
-                    probabilities.append(prob)
+        normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
+        return normalised_probabilities
 
-        numerator = probabilities[0]
-        denominator = 0
-        for element in probabilities:
-            denominator += element
+    def select_next_node(self):
 
-        return numerator / denominator
+        probabilities = self.get_probabilities()
+        # todo, review these 2 lines
+        node_id, probability = zip(*probabilities)
+        next_node = random.choices(node_id, weights=probability, k=1)[0]
+
+        # Update ant state
+        self.current_node = next_node
+        self.path.append(next_node)
+        self.unvisited_nodes.remove(next_node)
+
