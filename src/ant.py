@@ -91,6 +91,6 @@ class Ant:
             self.unvisited_nodes.remove(next_node)
 
         else:
-            return
+
             raise Exception(f"Ant at {self.current_node} has no unvisited neighbors to move to.")
 

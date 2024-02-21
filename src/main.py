@@ -36,6 +36,7 @@ node1 = Node("Node1")
 node2 = Node("Node2")
 node3 = Node("Node3")
 node4 = Node("Node4")
+node5 = Node("Node5")
 
 # populate node dictionary
 graph.add_node(node1)
@@ -118,10 +119,10 @@ def main():
         draw_graph()
         draw_ants(aco)
 
-
+        clock.tick(0.5)
         # Update the display
         pygame.display.flip()
-
+        clock.tick(0.5)
 
     pygame.quit()
 
@@ -129,4 +130,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-# todo IF YOU CANT GET THE CODE WORKING TOMORROW, HAVE THE DATA BE PRINTED TO CONSOLE, EDGE WEIGHTS, PROBABILITIES ECT
