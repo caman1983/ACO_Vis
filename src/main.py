@@ -49,9 +49,9 @@ graph.add_edge("Node1", "Node2", 10)
 graph.add_edge("Node1", "Node3", 20)
 graph.add_edge("Node4", "Node1", 30)
 
-ant1 = Ant(graph, "Node1")
+#ant1 = Ant(graph, "Node1")
 
-ant1.select_next_node()
+#ant1.select_next_node()
 
 
 def draw_graph():
@@ -122,7 +122,6 @@ def main():
         # Update the display
         pygame.display.flip()
 
-        # Cap the frame rate
 
     pygame.quit()
 
