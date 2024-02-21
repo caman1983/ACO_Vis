@@ -1,63 +1,118 @@
+import math
+
 import pygame
 import sys
 
-import ant
+from src.aco import ACO
+from src.ant import Ant
 from src.graph import Graph
 from src.node import Node
 
+# Initialises pygame library
+pygame.init()
 
-def foo():
-    # Initialises pygame library
-    pygame.init()
+# Variables for display parameters
+window_size = (800, 600)
+window_title = "ACO Visualizer"
 
-    # Variables for display parameters
-    window_size = (800, 600)
-    window_title = "ACO Visualizer"
+# Create pygame window using display variables
+screen = pygame.display.set_mode(window_size)
+pygame.display.set_caption(window_title)
 
-    # Create pygame window using display variables
-    pygame.display.set_mode(window_size)
-    pygame.display.set_caption(window_title)
+# Define colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
 
-    # Begin game loop using a flag to control
+# Clock for controlling frame rate
+clock = pygame.time.Clock()
+##############################
+
+graph = Graph()
+
+node1 = Node("Node1")
+node2 = Node("Node2")
+node3 = Node("Node3")
+node4 = Node("Node4")
+
+# populate node dictionary
+graph.add_node(node1)
+graph.add_node(node2)
+graph.add_node(node3)
+graph.add_node(node4)
+# graph.print_node_dict()
+
+
+graph.add_edge("Node1", "Node2", 10)
+graph.add_edge("Node1", "Node3", 20)
+graph.add_edge("Node4", "Node1", 30)
+
+ant1 = Ant(graph, "Node1")
+
+ant1.select_next_node()
+
+def draw_graph():
+    screen.fill(BLACK)
+    # iterate through every item in edges dictionary
+    # edge = key (containing tuple of connected nodes as strings)
+    # distance = pair-values (edge weight between nodes)
+    # draw a line between two nodes coordinates
+    for edge, distance in graph.edges_dict.items():
+        # edge = current iteration of tuple of edges
+        start_pos = graph.nodes_dict[edge[0]].coordinates
+        # access node dictionary using second element in edges tuple as id, get that nodes coordinates
+        end_pos = graph.nodes_dict[edge[1]].coordinates
+        pygame.draw.line(screen, WHITE, start_pos, end_pos, 1)  # Draw line for edge
+
+    # draw a circle at nodes coordinates
+    for node_id, node in graph.nodes_dict.items():
+        pygame.draw.circle(screen, RED, node.coordinates, 5)  # Draw node as a circle
+
+    pygame.display.flip()
+
+
+# todo: NOT MY CODE, REVIEW
+def generate_node_positions():
+    center_of_screen = (400, 300)
+    radius = 250
+    num_nodes = len(graph.nodes_dict)
+    angle_increment = 2 * math.pi / num_nodes
+    for i, node_id in enumerate(graph.nodes_dict):
+        angle = i * angle_increment
+        x = center_of_screen[0] + radius * math.cos(angle)
+        y = center_of_screen[1] + radius * math.sin(angle)
+        # Update the node's coordinates directly or use the set_coordinates method
+        graph.nodes_dict[node_id].set_coordinates(int(x), int(y))
+
+
+def main():
+    aco = ACO(graph, 3, )
+
+    generate_node_positions()
+
     running = True
     while running:
-        # pygame.event.get():   returns a list of events (mouse clicks, keyboard presses etc.)
-        # iterates through each event in events list & sets control flag to false if user attempts to close window
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Update game window at the end of each iteration
+        # Clear the screen
+        screen.fill(BLACK)
+
+        # Draw the graph
+        draw_graph()
+
+        # Update the display
         pygame.display.flip()
 
+        # Cap the frame rate
+        clock.tick(60)
+
     pygame.quit()
-    sys.exit()
-
-
-def main():
-    graph = Graph()
-
-    node1 = Node("Node1")
-    node2 = Node("Node2")
-    node3 = Node("Node3")
-
-    # populate node dictionary
-    graph.add_node(node1)
-    graph.add_node(node2)
-    graph.add_node(node3)
-    graph.print_node_dict()
-
-    graph.add_edge("Node1", "Node2", 10)
-    graph.add_edge("Node1", "Node3", 14)
-
-    connected_edges = graph.get_connected_nodes("Node1")
-    print(connected_edges)
-
-    ant1 = ant.Ant(graph, "Node1")
-    probability = ant1.select_next_node()
-    print(probability)
-    # IT FUCKING WORKS
-
 
 if __name__ == '__main__':
     main()
+
+# todo IF YOU CANT GET THE CODE WORKING TOMORROW, HAVE THE DATA BE PRINTED TO CONSOLE, EDGE WEIGHTS, PROBABILITIES ECT

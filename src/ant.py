@@ -32,7 +32,7 @@ class Ant:
         self.unvisited_nodes = set(graph.nodes_dict) - {start_node}
         # print("For debugging, set of unvisited nodes:", self.unvisited_nodes)
 
-
+    # todo: should be in graph class
     # probability function
     # traverse to next node from current node, based on todo: finish and explain
     def get_probabilities(self) -> list[tuple[str, float]]:
@@ -54,7 +54,7 @@ class Ant:
                 # get pheromone level between current node and potential next node
                 # todo: ensure this works as intended, what if the order is not as expected
                 pheromone_level = self.graph.get_pheromone_level((self.current_node, node))
-                # get distance metric between current node and potential next node
+                # get distance metric between current node and potential next traversable node
                 distance = self.graph.get_distance((self.current_node, node))
 
                 # eta = inverse of distance
@@ -71,8 +71,10 @@ class Ant:
                 total += node_potential
 
         normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
+        print(normalised_probabilities)
         return normalised_probabilities
 
+    # todo: REVIEW
     def select_next_node(self):
 
         probabilities = self.get_probabilities()

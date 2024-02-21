@@ -38,17 +38,18 @@ class Graph:
 
     # Check if both nodeIDs are present in node dictionary and link with given distance metric if true
     def add_edge(self, start_nodeID: str, end_nodeID: str, distance: float) -> None:
+        # Sort the node ID's to ensure consistency in storage and queries
+        sorted_edges = tuple(sorted((start_nodeID, end_nodeID)))
+
         # If given nodeID's present in nodes dictionary
         if start_nodeID in self.nodes_dict and end_nodeID in self.nodes_dict:
-
             # Adds an item to the dictionary, where the key is a tuple of the start_nodeID and the end node_nodeID
             # The pair-value is the given distance metric
             # Add nodes to edges dictionary
-            self.edges_dict[(start_nodeID, end_nodeID)] = distance
+            self.edges_dict[sorted_edges] = distance
 
             # initialise default pheromone level between two nodes
-            self.pheromone_levels[(start_nodeID,
-                                   end_nodeID)] = self.default_pheromone_level
+            self.pheromone_levels[sorted_edges] = self.default_pheromone_level
 
             print("Successfully connected", start_nodeID.upper(), "to", end_nodeID.upper(), "in edges dictionary.")
 
@@ -92,7 +93,7 @@ class Graph:
     def get_distance(self, edge: Tuple[str, str]) -> float:
         # .get = return pair value for given key
         # if key not present, return 0.0
-        return self.edges_dict.get(edge, 0.0)
+         return self.edges_dict.get(edge, 0.0)
 
     # return pheromone level for given key in dictionary (tuple of edges)
     def get_pheromone_level(self, edge: Tuple[str, str]) -> float:

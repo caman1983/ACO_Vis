@@ -33,6 +33,14 @@ class ACO:
         # [Ant(graph) for _ in range(num_ants)] <- create an ant object for total number of ants
 
         # Creates an ant object equal to the number in num_ants
-        self.ants: List[Ant] = [Ant(graph) for _ in range(num_ants)]
+        self.ants: List[Ant] = [Ant(graph, "Node1") for _ in range(num_ants)]   #todo: hardcoded for all ants to start in node1, FOR NOW
+
+
+    def move_ants(self):
+        for ant in self.ants:
+            ant.select_next_node()
+
+
+
 
 
