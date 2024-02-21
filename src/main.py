@@ -53,6 +53,7 @@ ant1 = Ant(graph, "Node1")
 
 ant1.select_next_node()
 
+
 def draw_graph():
     screen.fill(BLACK)
     # iterate through every item in edges dictionary
@@ -72,6 +73,16 @@ def draw_graph():
 
     pygame.display.flip()
 
+# draw ants by iterating through ants object list in ACO class
+def draw_ants(aco):
+    # iterate through ants object list
+    for ant in aco.ants:
+        # get string_id of ants current node
+        # get ants current position by using their "current node" string ID to retrieve the node object from the node dictionary
+        node_id = ant.current_node
+        current_position = aco.graph.nodes_dict[node_id]
+        pygame.draw.circle(screen, GREEN, current_position.coordinates, 5)
+
 
 # todo: NOT MY CODE, REVIEW
 def generate_node_positions():
@@ -88,7 +99,7 @@ def generate_node_positions():
 
 
 def main():
-    aco = ACO(graph, 3, )
+    aco = ACO(graph, 3)
 
     generate_node_positions()
 
@@ -98,19 +109,23 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
+        aco.move_ants()
+
         # Clear the screen
         screen.fill(BLACK)
 
         # Draw the graph
         draw_graph()
+        draw_ants(aco)
+
 
         # Update the display
         pygame.display.flip()
 
         # Cap the frame rate
-        clock.tick(60)
 
     pygame.quit()
+
 
 if __name__ == '__main__':
     main()

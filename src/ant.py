@@ -76,14 +76,21 @@ class Ant:
 
     # todo: REVIEW
     def select_next_node(self):
-
         probabilities = self.get_probabilities()
-        # todo, review these 2 lines
-        node_id, probability = zip(*probabilities)
-        next_node = random.choices(node_id, weights=probability, k=1)[0]
 
-        # Update ant state
-        self.current_node = next_node
-        self.path.append(next_node)
-        self.unvisited_nodes.remove(next_node)
+        # todo: REVIEW
+        # if ant has somewhere to do
+        if probabilities:
+            # todo, review these 2 lines
+            node_id, probability = zip(*probabilities)
+            next_node = random.choices(node_id, weights=probability, k=1)[0]
+
+            # Update ant state
+            self.current_node = next_node
+            self.path.append(next_node)
+            self.unvisited_nodes.remove(next_node)
+
+        else:
+            pass
+            #raise Exception(f"Ant at {self.current_node} has no unvisited neighbors to move to.")
 
