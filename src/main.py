@@ -37,18 +37,22 @@ node2 = Node("Node2")
 node3 = Node("Node3")
 node4 = Node("Node4")
 node5 = Node("Node5")
+node5 = Node("Node5")
 
 # populate node dictionary
 graph.add_node(node1)
 graph.add_node(node2)
 graph.add_node(node3)
 graph.add_node(node4)
+graph.add_node(node5)
+
 # graph.print_node_dict()
 
 
 graph.add_edge("Node1", "Node2", 10)
 graph.add_edge("Node1", "Node3", 20)
 graph.add_edge("Node4", "Node1", 30)
+graph.add_edge("Node5", "Node2", 30)
 
 #ant1 = Ant(graph, "Node1")
 
