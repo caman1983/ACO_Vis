@@ -37,7 +37,7 @@ node2 = Node("Node2")
 node3 = Node("Node3")
 node4 = Node("Node4")
 node5 = Node("Node5")
-node5 = Node("Node5")
+
 
 # populate node dictionary
 graph.add_node(node1)
@@ -85,12 +85,12 @@ def draw_ants(aco):
         # get string_id of ants current node
         # get ants current position by using their "current node" string ID to retrieve the node object from the node dictionary
         node_id = ant.current_node
-        current_position = aco.graph.nodes_dict[node_id]
-        pygame.draw.circle(screen, GREEN, current_position.coordinates, 5)
+        current_position = ant.current_position
+        pygame.draw.circle(screen, GREEN, current_position, 5)
 
 
 # todo: NOT MY CODE, REVIEW
-def generate_node_positions():
+def generate_node_coordinates():
     center_of_screen = (400, 300)
     radius = 250
     num_nodes = len(graph.nodes_dict)
@@ -104,9 +104,12 @@ def generate_node_positions():
 
 
 def main():
+    # needs to be first otherwise ants will be created before nodes have their coordinates
+    generate_node_coordinates()
+
     aco = ACO(graph, 3)
 
-    generate_node_positions()
+
 
     running = True
     while running:
@@ -114,7 +117,15 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        aco.move_ants()
+        draw_ants(aco)
+        for ant in aco.ants:
+            if ant.target_node_id is not None:  # if ant has a target node
+                ant.move_toward_target()
+
+            # if ant does not have a target node, set one
+            else:
+                next_target_id = ant.select_next_node()
+                ant.set_target_node(next_target_id)
 
         # Clear the screen
         screen.fill(BLACK)
@@ -123,10 +134,10 @@ def main():
         draw_graph()
         draw_ants(aco)
 
-        clock.tick(0.5)
+
         # Update the display
         pygame.display.flip()
-        clock.tick(0.5)
+        clock.tick(60)
 
     pygame.quit()
 

@@ -89,15 +89,25 @@ class Graph:
         # return list of connected nodes, excluding given node
         return connected_nodes
 
-    # getter, returns distance between two given nodes (edges_dictionary key)
+    # returns distance between two given nodes (edges_dictionary key)
     def get_distance(self, edge: Tuple[str, str]) -> float:
         # .get = return pair value for given key
         # if key not present, return 0.0
-         return self.edges_dict.get(edge, 0.0)
+        return self.edges_dict.get(edge, 0.0)
 
     # return pheromone level for given key in dictionary (tuple of edges)
     def get_pheromone_level(self, edge: Tuple[str, str]) -> float:
         return self.pheromone_levels.get(edge, 0.0)
+
+    def get_node_coordinates(self, node_id: str):
+        node = self.nodes_dict.get(node_id)
+
+        # if node variable is not empty
+        if node is not None:
+            return node.coordinates
+        else:
+            raise Exception("add error message")
+
 
     # print node dictionary contents in readable format
     def print_node_dict(self) -> None:
