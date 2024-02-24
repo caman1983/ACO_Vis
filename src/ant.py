@@ -22,6 +22,8 @@ class Ant:
         # graph object
         self.graph = graph
 
+        self.starting_nodeID = start_node
+
         # current node of an entity, beginning as the starting node id
         self.current_node = start_node
 
@@ -123,12 +125,12 @@ class Ant:
         print(normalised_probabilities)
         return normalised_probabilities
 
-    # todo: REVIEW
+    # todo: REVIEW, return next node, why?
     def select_next_node(self):
         probabilities = self.get_probabilities()
 
         # todo: REVIEW
-        # if ant has somewhere to do
+        # if ant has somewhere to go
         if probabilities:
             # todo, review these 2 lines
             node_id, probability = zip(*probabilities)
@@ -137,8 +139,15 @@ class Ant:
             # Update ant state
             self.current_node = next_node
             self.path.append(next_node)
+            print("Path:", self.path)
             self.unvisited_nodes.remove(next_node)
             return next_node
         else:
+            print("reached")
+            self.return_home()
+            return self.target_node_id
+            #raise Exception(f"Ant at {self.current_node} has no unvisited neighbors to move to.")
 
-            raise Exception(f"Ant at {self.current_node} has no unvisited neighbors to move to.")
+
+    def return_home(self):
+        self.set_target_node(self.starting_nodeID)

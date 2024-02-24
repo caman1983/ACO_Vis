@@ -37,22 +37,24 @@ node2 = Node("Node2")
 node3 = Node("Node3")
 node4 = Node("Node4")
 node5 = Node("Node5")
-
+node6 = Node("Node6")
 
 # populate node dictionary
 graph.add_node(node1)
 graph.add_node(node2)
 graph.add_node(node3)
 graph.add_node(node4)
+# todo: Last node to be generated causes ant to get stuck
 graph.add_node(node5)
+graph.add_node(node6)
 
 # graph.print_node_dict()
 
 
-graph.add_edge("Node1", "Node2", 10)
-graph.add_edge("Node1", "Node3", 20)
-graph.add_edge("Node4", "Node1", 30)
-graph.add_edge("Node5", "Node2", 30)
+graph.add_edge("Node1", "Node2", 100)
+graph.add_edge("Node2", "Node3", 200)
+graph.add_edge("Node2", "Node5", 1)
+graph.add_edge("Node4", "Node2", 300)
 
 #ant1 = Ant(graph, "Node1")
 
@@ -107,7 +109,7 @@ def main():
     # needs to be first otherwise ants will be created before nodes have their coordinates
     generate_node_coordinates()
 
-    aco = ACO(graph, 3)
+    aco = ACO(graph, 1)
 
 
 
@@ -126,6 +128,7 @@ def main():
             else:
                 next_target_id = ant.select_next_node()
                 ant.set_target_node(next_target_id)
+                print(next_target_id)
 
         # Clear the screen
         screen.fill(BLACK)
