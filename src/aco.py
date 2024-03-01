@@ -11,6 +11,7 @@ Structure:
     Select the next node based on the decision rule
     Update pheromones on the traversed edges after completion of a tour
 """
+import random
 from typing import List
 
 from src.ant import Ant
@@ -33,12 +34,9 @@ class ACO:
         # [Ant(graph) for _ in range(num_ants)] <- create an ant object for total number of ants
 
         # Creates an ant object equal to the number in num_ants
-        self.ants: List[Ant] = [Ant(graph, "Node1") for _ in range(num_ants)]   #todo: hardcoded for all ants to start in node1, FOR NOW
+        self.ants: List[Ant] = [Ant(graph, random.choice(list(graph.nodes_dict.keys()))) for _ in range(num_ants)]   #todo: hardcoded for all ants to start in node1, FOR NOW
 
 
-    def move_ants(self):
-        for ant in self.ants:
-            ant.select_next_node()
 
 
 

@@ -51,14 +51,13 @@ graph.add_node(node6)
 # graph.print_node_dict()
 
 
-graph.add_edge("Node1", "Node2", 100)
-graph.add_edge("Node2", "Node3", 200)
-graph.add_edge("Node2", "Node5", 1)
+graph.add_edge("Node1", "Node2", 50)
+graph.add_edge("Node2", "Node3", 20)
+graph.add_edge("Node2", "Node5", 10)
 graph.add_edge("Node4", "Node2", 300)
+graph.add_edge("Node6", "Node2", 2)
 
-#ant1 = Ant(graph, "Node1")
 
-#ant1.select_next_node()
 
 
 def draw_graph():
@@ -67,11 +66,11 @@ def draw_graph():
     # edge = key (containing tuple of connected nodes as strings)
     # distance = pair-values (edge weight between nodes)
     # draw a line between two nodes coordinates
-    for edge, distance in graph.edges_dict.items():
+    for node_id, distance in graph.edges_dict.items():
         # edge = current iteration of tuple of edges
-        start_pos = graph.nodes_dict[edge[0]].coordinates
+        start_pos = graph.nodes_dict[node_id[0]].coordinates
         # access node dictionary using second element in edges tuple as id, get that nodes coordinates
-        end_pos = graph.nodes_dict[edge[1]].coordinates
+        end_pos = graph.nodes_dict[node_id[1]].coordinates
         pygame.draw.line(screen, WHITE, start_pos, end_pos, 1)  # Draw line for edge
 
     # draw a circle at nodes coordinates
@@ -112,12 +111,13 @@ def main():
     aco = ACO(graph, 1)
 
 
-
+    # setup code for pygame loop
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
 
         draw_ants(aco)
         for ant in aco.ants:
@@ -126,9 +126,9 @@ def main():
 
             # if ant does not have a target node, set one
             else:
-                next_target_id = ant.select_next_node()
+                next_target_id = ant.get_next_node()
                 ant.set_target_node(next_target_id)
-                print(next_target_id)
+                print("Next Target:", next_target_id)
 
         # Clear the screen
         screen.fill(BLACK)
@@ -144,6 +144,7 @@ def main():
 
     pygame.quit()
 
+# todo: set a target node for the ant, update pheromones
 
 if __name__ == '__main__':
     main()

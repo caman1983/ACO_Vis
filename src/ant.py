@@ -39,12 +39,15 @@ class Ant:
         self.target_node_id = None
         self.speed = 1
 
+        print("Starting node:", self.current_node)
+
     # todo: useless func?
     def set_target_node(self, target_node_id: str):
         self.target_node_id = target_node_id
 
+    # todo: review func
     def move_toward_target(self):
-        if self.target_node_id is None:
+        if self.target_node_id is None:     # todo: redundant code, this condition is also checked in main
             raise Exception("Target nodeID is empty")
         else:
             # get xy coordinates of target node
@@ -59,6 +62,7 @@ class Ant:
             distance = (dx ** 2 + dy ** 2) ** 0.5
             if distance == 0:
                 return  # Already at the target, should select a new target
+                # return because the function should no longer run, the ant should stop "moving" towards target
 
         # convert to unit vector :todo review
         dx, dy = dx / distance, dy / distance
@@ -69,6 +73,7 @@ class Ant:
             self.current_position[1] + dy * self.speed
         )
 
+        # if ant has reached target node
         # Check if reached or passed the target node
         if (dx > 0 and self.current_position[0] >= target_node_coordinates[0] or
             dx < 0 and self.current_position[0] <= target_node_coordinates[0]) and \
@@ -86,6 +91,9 @@ class Ant:
     # todo: should be in graph class
     # probability function
     # traverse to next node from current node, based on todo: finish and explain
+
+    # this function in just getting probabilities, it is also getting connected nodes, and checking if a node has been visited
+    # todo: CHANGE FUNCTION NAME, it is returning a list of connected nodes and their probabilities
     def get_probabilities(self) -> list[tuple[str, float]]:
         probabilities = []
         total = 0
@@ -120,13 +128,14 @@ class Ant:
 
                 # summation of all node probabilities
                 total += node_potential
-
+        #
         normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
-        print(normalised_probabilities)
+        print("Traversal probabilities:", normalised_probabilities)
         return normalised_probabilities
 
-    # todo: REVIEW, return next node, why?
-    def select_next_node(self):
+
+    # determines and returns next node based on probabilities calculated
+    def get_next_node(self):
         probabilities = self.get_probabilities()
 
         # todo: REVIEW
@@ -142,12 +151,17 @@ class Ant:
             print("Path:", self.path)
             self.unvisited_nodes.remove(next_node)
             return next_node
+
+        # todo: why is this else satisfied when ant has nowhere to go
+        # This runs once tour is complete
         else:
             print("reached")
-            self.return_home()
+
+            # if ant has nowhere to go, set target node to home node and return home node
+            self.set_target_node(self.starting_nodeID)
+
             return self.target_node_id
             #raise Exception(f"Ant at {self.current_node} has no unvisited neighbors to move to.")
 
 
-    def return_home(self):
-        self.set_target_node(self.starting_nodeID)
+

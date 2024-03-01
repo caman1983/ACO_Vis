@@ -78,26 +78,35 @@ class Graph:
     # if given node id present in dictionary key,
     # returns a list of connected edges, excluding given node
     # todo: explain this function
+    # get connected nodes to given node
     def get_connected_nodes(self, node_id: str) -> List[str]:
         connected_nodes = []
         # iterate through tuple key in edges dictionary
         for edges in self.edges_dict.keys():
-            # check if node present in keys
+            # check if node_id present in keys
             if node_id in edges:
                 # todo: review
                 connected_nodes.append(edges[1] if edges[0] == node_id else edges[0])
         # return list of connected nodes, excluding given node
-        return connected_nodes
+
+        # todo: redundant???
+        if not connected_nodes:
+            raise Exception("No connected nodes: line 92 graph")
+        else:
+            return connected_nodes
 
     # returns distance between two given nodes (edges_dictionary key)
+    # todo: why does sorting work
     def get_distance(self, edge: Tuple[str, str]) -> float:
+        sorted_edges = tuple(sorted(edge))
         # .get = return pair value for given key
         # if key not present, return 0.0
-        return self.edges_dict.get(edge, 0.0)
+        return self.edges_dict.get(sorted_edges, 0.0)
 
     # return pheromone level for given key in dictionary (tuple of edges)
     def get_pheromone_level(self, edge: Tuple[str, str]) -> float:
-        return self.pheromone_levels.get(edge, 0.0)
+        sorted_edges = tuple(sorted(edge))
+        return self.pheromone_levels.get(sorted_edges, 0.0)
 
     def get_node_coordinates(self, node_id: str):
         node = self.nodes_dict.get(node_id)
