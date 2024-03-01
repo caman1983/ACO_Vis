@@ -14,8 +14,8 @@ Structure:
 import random
 from typing import List
 
-from src.ant import Ant
-from src.graph import Graph
+from src.aco_algorithm.ant import Ant
+from src.utilities.graph import Graph
 
 
 class ACO:
@@ -34,7 +34,8 @@ class ACO:
         # [Ant(graph) for _ in range(num_ants)] <- create an ant object for total number of ants
 
         # Creates an ant object equal to the number in num_ants
-        self.ants: List[Ant] = [Ant(graph, random.choice(list(graph.nodes_dict.keys()))) for _ in range(num_ants)]   #todo: hardcoded for all ants to start in node1, FOR NOW
+        #self.ants: List[Ant] = [Ant(graph, random.choice(list(graph.nodes_dict.keys()))) for _ in range(num_ants)]   #todo: hardcoded for all ants to start in node1, FOR NOW
+        self.ants: List[Ant] = [Ant(graph, "Node3") for _ in range(num_ants)]   #todo: hardcoded for all ants to start in node1, FOR NOW
 
 
 

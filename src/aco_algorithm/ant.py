@@ -1,7 +1,6 @@
 import random
 
-from src import aco
-from src.graph import Graph
+from src.utilities.graph import Graph
 
 
 # n = distance to "food"
