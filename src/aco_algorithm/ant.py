@@ -35,7 +35,7 @@ class Ant:
         self.__current_node = start_node  # the ants current node on the graph, beginning as the starting node
         self.__current_position = self.graph.get_node_coordinates(start_node)  # current x,y coordinate values of ant
         self.__target_node_id = None  # initialise as none as a target has not been selected yet
-        self.__speed = 50
+        self.__speed = 1
 
         print("Starting node:", self.__current_node)
 
@@ -54,8 +54,9 @@ class Ant:
         distance = (dx ** 2 + dy ** 2) ** 0.5
         #todo: THIS IS CAUSING IT
         if distance == 0:
-            return  # Already at the target, should select a new target
-            # return because the function should no longer run, the ant should stop "moving" towards target
+            return
+
+
 
         # convert to unit vector :todo review
         dx, dy = dx / distance, dy / distance
@@ -72,6 +73,7 @@ class Ant:
             dx < 0 and self.__current_position[0] <= target_node_coordinates[0]) and \
                 (dy > 0 and self.__current_position[1] >= target_node_coordinates[1] or
                  dy < 0 and self.__current_position[1] <= target_node_coordinates[1]):
+
             # if ant has reached target node, update state
             self.__current_position = target_node_coordinates
 
@@ -84,7 +86,6 @@ class Ant:
     # traverse to next node from current node, based on todo: finish and explain
 
     # this function in just getting probabilities, it is also getting connected nodes, and checking if a node has been visited
-    # todo: CHANGE FUNCTION NAME, it is returning a list of connected nodes and their probabilities
     def get_probabilities(self) -> list[tuple[str, float]]:
         probabilities = []
         total = 0
@@ -146,7 +147,7 @@ class Ant:
         # todo: why is this else satisfied when ant has nowhere to go
         # if probabilities list is empty, change to if all nodes are explored
         elif not probabilities:
-            print("reached")
+            print("Nowhere else to go, change this to run until all nodes are visited")
 
             # if ant has nowhere to go, set target node to home node and return home node
             self.set_target_node(self.STARTING_NODE_ID)
