@@ -55,14 +55,18 @@ def main():
         # draw ants on every game loop interation
         visual.draw_ants(aco)
 
-        # iterate through ant objects
         for ant in aco.ants:
             if ant.has_target_node():  # if ant has a target node
                 ant.move_toward_target()
 
             # if ant does not have a target node, set one
             else:
-                ant.set_target_node(ant.get_next_node(ant.get_probabilities()))
+                # get probabilities based on probability decision rule
+                probabilities = ant.get_probabilities()
+                # get next node based on probabilities
+                next_node = ant.get_next_node(probabilities)
+                # set target
+                ant.set_target_node(next_node)
 
 
         # Clear the screen

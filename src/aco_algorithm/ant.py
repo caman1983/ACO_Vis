@@ -52,6 +52,7 @@ class Ant:
 
         # calculate distance to target
         distance = (dx ** 2 + dy ** 2) ** 0.5
+        #todo: THIS IS CAUSING IT
         if distance == 0:
             return  # Already at the target, should select a new target
             # return because the function should no longer run, the ant should stop "moving" towards target
