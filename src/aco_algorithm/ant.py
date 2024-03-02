@@ -39,7 +39,7 @@ class Ant:
 
         print("Starting node:", self.__current_node)
 
-    # todo: review func
+    # todo: review func, study this, why does it work
     def move_toward_target(self):
 
         # get xy coordinates of target node
@@ -49,43 +49,34 @@ class Ant:
         dx = target_node_coordinates[0] - self.__current_position[0]
         # calculate vertical difference between ants position and target node
         dy = target_node_coordinates[1] - self.__current_position[1]
-
         # calculate distance to target
         distance = (dx ** 2 + dy ** 2) ** 0.5
-        #todo: THIS IS CAUSING IT
-        if distance == 0:
-            return
 
+        threshold = max(self.__speed, 5)  # Use speed or a minimum value, e.g., 5 pixels
 
+        if distance > threshold:
+            dx /= distance
+            dy /= distance
+            self.__current_position = (
+                self.__current_position[0] + dx * self.__speed,
+                self.__current_position[1] + dy * self.__speed,
+            )
+        else:
+            # if ant has reached target node, update state todo: change following lines to method
 
-        # convert to unit vector :todo review
-        dx, dy = dx / distance, dy / distance
-
-        # Update position based on speed and direction
-        self.__current_position = (
-            self.__current_position[0] + dx * self.__speed,
-            self.__current_position[1] + dy * self.__speed
-        )
-
-        # if ant has reached target node
-        # Check if reached or passed the target node
-        if (dx > 0 and self.__current_position[0] >= target_node_coordinates[0] or
-            dx < 0 and self.__current_position[0] <= target_node_coordinates[0]) and \
-                (dy > 0 and self.__current_position[1] >= target_node_coordinates[1] or
-                 dy < 0 and self.__current_position[1] <= target_node_coordinates[1]):
-
-            # if ant has reached target node, update state
             self.__current_position = target_node_coordinates
 
             self.__current_node = self.__target_node_id
 
             self.__target_node_id = None  # Reset target node to allow selection of a new target
 
+
     # todo: should be in graph class
     # probability function
     # traverse to next node from current node, based on todo: finish and explain
 
     # this function in just getting probabilities, it is also getting connected nodes, and checking if a node has been visited
+    # todo: THIS FUNCTION SHOULD NOT UPDATE ANY STATES
     def get_probabilities(self) -> list[tuple[str, float]]:
         probabilities = []
         total = 0
@@ -137,7 +128,6 @@ class Ant:
             next_node = random.choices(node_id, weights=probability, k=1)[0]
 
             # Update ant state
-            # self.current_node = next_node
             self.path.append(next_node)
             print("Path:", self.path)
             self.__unvisited_nodes.remove(next_node)

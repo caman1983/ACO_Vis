@@ -60,7 +60,7 @@ def main():
                 ant.move_toward_target()
 
             # if ant does not have a target node, set one
-            else:
+            elif not ant.has_target_node():
                 # get probabilities based on probability decision rule
                 probabilities = ant.get_probabilities()
                 # get next node based on probabilities
