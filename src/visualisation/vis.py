@@ -58,7 +58,7 @@ class Vis:
         # iterate through ants object list
         for ant in aco.ants:
             # draws ants based on their current coordinates
-            pygame.draw.circle(self.screen, self.GREEN, ant.current_position, 5)
+            pygame.draw.circle(self.screen, self.GREEN, ant.get_current_position(), 5)
 
     def clear_screen(self):
         self.screen.fill(self.BLACK)

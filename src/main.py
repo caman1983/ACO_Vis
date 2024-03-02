@@ -31,6 +31,12 @@ graph.add_edge("Node2", "Node5", 10)
 graph.add_edge("Node4", "Node2", 300)
 graph.add_edge("Node6", "Node2", 2)
 
+#ant.get_next_node(get_probabilities())
+
+#or
+
+#ant.get_next_node().probabilities() ?????
+
 
 def main():
     # needs to be first otherwise ants will be created before nodes have their coordinates
@@ -49,15 +55,15 @@ def main():
         # draw ants on every game loop interation
         visual.draw_ants(aco)
 
+        # iterate through ant objects
         for ant in aco.ants:
-            if ant.target_node_id is not None:  # if ant has a target node
+            if ant.has_target_node():  # if ant has a target node
                 ant.move_toward_target()
 
             # if ant does not have a target node, set one
             else:
-                next_target_id = ant.get_next_node()
-                ant.set_target_node(next_target_id)
-                print("Next Target:", next_target_id)
+                ant.set_target_node(ant.get_next_node(ant.get_probabilities()))
+
 
         # Clear the screen
         visual.clear_screen()
