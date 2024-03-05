@@ -52,6 +52,7 @@ class Ant:
         # calculate distance to target
         distance = (dx ** 2 + dy ** 2) ** 0.5
 
+        #todo: review
         threshold = max(self.__speed, 5)  # Use speed or a minimum value, e.g., 5 pixels
 
         if distance > threshold:
@@ -121,7 +122,7 @@ class Ant:
         # todo: move method to be called outside see main comment
 
         # todo: REVIEW
-        # if ant has somewhere to go
+        # if ant has somewhere to go (if probabilities list is populated)
         if probabilities:
             # todo, review these 2 lines
             node_id, probability = zip(*probabilities)
@@ -134,7 +135,7 @@ class Ant:
             print("Next target:", next_node)
             return next_node
 
-        # todo: why is this else satisfied when ant has nowhere to go
+        # todo: why is this else satisfied when ant has nowhere to go - probabilities list is not populated
         # if probabilities list is empty, change to if all nodes are explored
         elif not probabilities:
             print("Nowhere else to go, change this to run until all nodes are visited")
@@ -157,6 +158,9 @@ class Ant:
 
     def set_target_node(self, target_node_id: str):
         self.__target_node_id = target_node_id
+
+    def set_current_node(self, node_id: str):
+        self.__current_node = node_id
 
     def get_current_position(self):
         return self.__current_position
