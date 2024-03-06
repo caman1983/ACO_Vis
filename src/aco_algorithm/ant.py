@@ -147,7 +147,7 @@ class Ant:
                 # Update ant state
                 self.path.append(next_node)  # add ants next node to path
                 print("Path:", self.path)
-
+                self.unvisited_nodes.remove(next_node)
                 print("Next target:", next_node)
                 return next_node
 
