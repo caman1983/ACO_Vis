@@ -19,13 +19,7 @@ from src.utilities.graph import Graph
 
 
 class ACO:
-
-    # ants: list[Ant] <- example of declaring an instance variable
-
     def __init__(self, graph: Graph, num_ants: int) -> None:
-        # Instance variables:
-
-        # assign constructor parameters to instance variables/class parameter
         self.graph = graph
 
         # self.ants: List[Ant] <- Declare class attribute ants which takes a list of ant objects
