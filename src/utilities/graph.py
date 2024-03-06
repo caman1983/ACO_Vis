@@ -25,7 +25,7 @@ class Graph:
         # if a tuple of two nodes exists, an edge is present between them on the graph
         self.pheromone_levels: Dict[Tuple[str, str], float] = {}
 
-        self.default_pheromone_level = 1
+        self.DEFAULT_PHEROMONE_LEVEL = 1
 
     # todo: explain function purpose and action
     def add_node(self, node: Node) -> None:
@@ -49,7 +49,7 @@ class Graph:
             self.edges_dict[sorted_edges] = distance
 
             # initialise default pheromone level between two nodes
-            self.pheromone_levels[sorted_edges] = self.default_pheromone_level
+            self.pheromone_levels[sorted_edges] = self.DEFAULT_PHEROMONE_LEVEL
 
             print("Successfully connected", start_nodeID.upper(), "to", end_nodeID.upper(), "in edges dictionary.")
 

@@ -16,7 +16,9 @@ node4 = Node("Node4")
 node5 = Node("Node5")
 node6 = Node("Node6")
 
-#node7 = Node("Node7") UNCOMMENT, FOR DEMONSTRATION
+node7 = Node("Node7")
+
+
 
 # populate node dictionary
 graph.add_node(node1)
@@ -24,22 +26,30 @@ graph.add_node(node2)
 graph.add_node(node3)
 graph.add_node(node4)
 
+# adding it here makes sure it's in the middle
+graph.add_node(node7)
+
 graph.add_node(node5)
 graph.add_node(node6)
 
-#graph.add_node(node7) UNCOMMENT, FOR DEMONSTRATION
-
-graph.add_edge("Node1", "Node2", 50)
-graph.add_edge("Node2", "Node3", 50)
-graph.add_edge("Node2", "Node5", 50)
-graph.add_edge("Node4", "Node2", 50)
-graph.add_edge("Node6", "Node2", 50)
 
 
-#graph.add_edge("Node6", "Node7", 50)   UNCOMMENT, FOR DEMONSTRATION
-#graph.add_edge("Node2", "Node7", 50)
 
-#ant.get_next_node(get_probabilities())
+
+graph.add_edge("Node1", "Node2", 5)
+graph.add_edge("Node2", "Node3", 3)
+graph.add_edge("Node3", "Node4", 50)
+
+
+graph.add_edge("Node1", "Node6", 5)
+graph.add_edge("Node6", "Node5", 1)
+graph.add_edge("Node5", "Node7", 2)
+
+# CONNECTS LINES
+#graph.add_edge("Node4", "Node7", 50)
+
+
+
 
 #or
 
@@ -51,7 +61,7 @@ def main():
     Vis.generate_node_coordinates(graph)
     visual = Vis()
 
-    aco = ACO(graph, 5)
+    aco = ACO(graph, 1)
 
     # setup code for pygame loop
     running = True
@@ -67,7 +77,7 @@ def main():
             if ant.has_target_node():  # if ant has a target node
                 ant.move_toward_target()
 
-            # if ant does not have a target node, set one
+            # if ant does not have a target node, set one todo: if target node has been reached this runs (check)
             elif not ant.has_target_node():
                 # get probabilities based on probability decision rule
                 probabilities = ant.get_probabilities()

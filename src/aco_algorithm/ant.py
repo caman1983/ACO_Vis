@@ -32,12 +32,14 @@ class Ant:
         # print("For debugging, set of unvisited nodes:", self.unvisited_nodes)
 
         # for movement
-        self.__current_node = start_node  # the ants current node on the graph, beginning as the starting node
+        self.current_node = start_node  # the ants current node on the graph, beginning as the starting node
         self.__current_position = self.graph.get_node_coordinates(start_node)  # current x,y coordinate values of ant
         self.__target_node_id = None  # initialise as none as a target has not been selected yet
         self.__speed = 1
 
-        print("Starting node:", self.__current_node)
+        self.FINAL_TARGET_NODE = "Node7"    # hard coded
+
+        print("Starting node:", self.current_node)
 
     # todo: review func, study this, why does it work
     def move_toward_target(self):
@@ -70,7 +72,7 @@ class Ant:
             self.__current_position = target_node_coordinates
 
             # set current node to target node, as target node has been reached
-            self.__current_node = self.__target_node_id
+            self.current_node = self.__target_node_id
 
             self.__target_node_id = None  # Reset target node to allow selection of a new target
 
@@ -94,18 +96,16 @@ class Ant:
 
         # list of connected nodes minus the current node
         # get list of connected nodes to current node
-        connected_nodes = self.graph.get_connected_nodes(self.__current_node)
+        connected_nodes = self.graph.get_connected_nodes(self.current_node)
 
         # iterate through list of traversal nodes
         for node in connected_nodes:
-
-            # if current node has not been visited
             if node in self.unvisited_nodes:
                 # get pheromone level between current node and potential next node
                 # todo: ensure this works as intended, what if the order is not as expected
-                pheromone_level = self.graph.get_pheromone_level((self.__current_node, node))
+                pheromone_level = self.graph.get_pheromone_level((self.current_node, node))
                 # get distance metric between current node and potential next node
-                distance = self.graph.get_distance((self.__current_node, node))
+                distance = self.graph.get_distance((self.current_node, node))
 
                 # eta = inverse of distance
                 distance_inverse = 1 / distance
@@ -119,11 +119,12 @@ class Ant:
 
                 # summation of all node probabilities
                 total += node_potential
-        # todo: review and comment!!!!!
-        normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
-        print("Traversal probabilities:", normalised_probabilities)
-        return normalised_probabilities
-        # todo: returns an empty list if all nodes are visited OR there is nowhere else the ant can go
+
+            # todo: review and comment!!!!!
+            normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
+            print("Traversal probabilities:", normalised_probabilities)
+            return normalised_probabilities
+            # todo: returns an empty list if there is nowhere else the ant can go
 
     # determines and returns next node based on probabilities calculated
     def get_next_node(self, probabilities: list[tuple[str, float]]) -> str:
@@ -136,14 +137,21 @@ class Ant:
             node_id, probability = zip(*probabilities)
             next_node = random.choices(node_id, weights=probability, k=1)[0]
 
-            # Update ant state
-            self.path.append(next_node)  # add ants next node to path
-            print("Path:", self.path)
-            self.unvisited_nodes.remove(next_node)  # remove next node from unvisited
-            print("Next target:", next_node)
-            return next_node
+            # if ant has reached final target
+            if self.current_node == self.FINAL_TARGET_NODE:
+                # return starting node id, ant will return to starting node
+                return self.STARTING_NODE_ID
 
-        # todo: why is this else satisfied when ant has nowhere to go - probabilities list is not populated
+            # if ant has not reached final target
+            else:
+                # Update ant state
+                self.path.append(next_node)  # add ants next node to path
+                print("Path:", self.path)
+
+                print("Next target:", next_node)
+                return next_node
+
+        # todo: if ant has no where to go (probabilities list is not populated)
         # if probabilities list is empty (ant has nowhere to go) return last path in node
         elif not probabilities:
             print("Nowhere else to go, unvisited nodes list is not empty. Backtracking...")
@@ -155,13 +163,6 @@ class Ant:
                 self.set_target_node(backtrack_node)
                 return self.__target_node_id
 
-            else:  # todo: why does this else statement run when all nodes are visited??
-                print("all nodes have been visited, returning home...", self.unvisited_nodes)
-                # if ant has nowhere to go, set target node to home node and return home node
-                self.set_target_node(self.STARTING_NODE_ID)
-
-                return self.__target_node_id
-                # raise Exception(f"Ant at {self.current_node} has no unvisited neighbors to move to.")
 
     # functions to access and modify private variables, enforcing encapsulation
     # getters setters etc
@@ -177,7 +178,7 @@ class Ant:
         self.__target_node_id = target_node_id
 
     def set_current_node(self, node_id: str):
-        self.__current_node = node_id
+        self.current_node = node_id
 
     def get_current_position(self):
         return self.__current_position
