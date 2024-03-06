@@ -75,7 +75,7 @@ def main():
                 next_node = ant.get_next_node(probabilities)
                 # set target
                 ant.set_target_node(next_node)
-
+        ## demo
 
 
         # Clear the screen
