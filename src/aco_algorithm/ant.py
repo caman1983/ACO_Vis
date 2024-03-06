@@ -28,7 +28,7 @@ class Ant:
         self.STARTING_NODE_ID = start_node
 
         # set to record unvisited nodes, starts with full list of all nodes in graph - starting node
-        self.__unvisited_nodes = set(graph.nodes_dict) - {start_node}
+        self.unvisited_nodes = set(graph.nodes_dict) - {start_node}
         # print("For debugging, set of unvisited nodes:", self.unvisited_nodes)
 
         # for movement
@@ -52,7 +52,7 @@ class Ant:
         # calculate distance to target
         distance = (dx ** 2 + dy ** 2) ** 0.5
 
-        #todo: review
+        # todo: review
         threshold = max(self.__speed, 5)  # Use speed or a minimum value, e.g., 5 pixels
 
         if distance > threshold:
@@ -62,15 +62,17 @@ class Ant:
                 self.__current_position[0] + dx * self.__speed,
                 self.__current_position[1] + dy * self.__speed,
             )
-        else:
-            # if ant has reached target node, update state todo: change following lines to method
 
+        else:
+            # if ant has reached target node, update ant state todo: change following lines to method
+
+            # set current position (coordinates) to target node, as target node is reached
             self.__current_position = target_node_coordinates
 
+            # set current node to target node, as target node has been reached
             self.__current_node = self.__target_node_id
 
             self.__target_node_id = None  # Reset target node to allow selection of a new target
-
 
     # todo: should be in graph class
     # probability function
@@ -78,6 +80,11 @@ class Ant:
 
     # this function in just getting probabilities, it is also getting connected nodes, and checking if a node has been visited
     # todo: THIS FUNCTION SHOULD NOT UPDATE ANY STATES
+    """ Calculates probabilities for traversal of unvisited connected nodes
+    
+    
+    """
+
     def get_probabilities(self) -> list[tuple[str, float]]:
         probabilities = []
         total = 0
@@ -93,7 +100,7 @@ class Ant:
         for node in connected_nodes:
 
             # if current node has not been visited
-            if node in self.__unvisited_nodes:
+            if node in self.unvisited_nodes:
                 # get pheromone level between current node and potential next node
                 # todo: ensure this works as intended, what if the order is not as expected
                 pheromone_level = self.graph.get_pheromone_level((self.__current_node, node))
@@ -116,6 +123,7 @@ class Ant:
         normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
         print("Traversal probabilities:", normalised_probabilities)
         return normalised_probabilities
+        # todo: returns an empty list if all nodes are visited OR there is nowhere else the ant can go
 
     # determines and returns next node based on probabilities calculated
     def get_next_node(self, probabilities: list[tuple[str, float]]) -> str:
@@ -129,22 +137,31 @@ class Ant:
             next_node = random.choices(node_id, weights=probability, k=1)[0]
 
             # Update ant state
-            self.path.append(next_node)
+            self.path.append(next_node)  # add ants next node to path
             print("Path:", self.path)
-            self.__unvisited_nodes.remove(next_node)
+            self.unvisited_nodes.remove(next_node)  # remove next node from unvisited
             print("Next target:", next_node)
             return next_node
 
         # todo: why is this else satisfied when ant has nowhere to go - probabilities list is not populated
-        # if probabilities list is empty, change to if all nodes are explored
+        # if probabilities list is empty (ant has nowhere to go) return last path in node
         elif not probabilities:
-            print("Nowhere else to go, change this to run until all nodes are visited")
+            print("Nowhere else to go, unvisited nodes list is not empty. Backtracking...")
 
-            # if ant has nowhere to go, set target node to home node and return home node
-            self.set_target_node(self.STARTING_NODE_ID)
+            if len(self.path) > 1:
+                self.path.pop()  # Remove current node from path
+                backtrack_node = self.path[-1]
 
-            return self.__target_node_id
-            # raise Exception(f"Ant at {self.current_node} has no unvisited neighbors to move to.")
+                self.set_target_node(backtrack_node)
+                return self.__target_node_id
+
+            else:  # todo: why does this else statement run when all nodes are visited??
+                print("all nodes have been visited, returning home...", self.unvisited_nodes)
+                # if ant has nowhere to go, set target node to home node and return home node
+                self.set_target_node(self.STARTING_NODE_ID)
+
+                return self.__target_node_id
+                # raise Exception(f"Ant at {self.current_node} has no unvisited neighbors to move to.")
 
     # functions to access and modify private variables, enforcing encapsulation
     # getters setters etc
@@ -164,3 +181,6 @@ class Ant:
 
     def get_current_position(self):
         return self.__current_position
+
+    def get_unvisited_nodes(self):
+        return self.unvisited_nodes

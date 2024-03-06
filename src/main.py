@@ -16,20 +16,28 @@ node4 = Node("Node4")
 node5 = Node("Node5")
 node6 = Node("Node6")
 
+#node7 = Node("Node7") UNCOMMENT, FOR DEMONSTRATION
+
 # populate node dictionary
 graph.add_node(node1)
 graph.add_node(node2)
 graph.add_node(node3)
 graph.add_node(node4)
-# todo: Last node to be generated causes ant to get stuck
+
 graph.add_node(node5)
 graph.add_node(node6)
 
+#graph.add_node(node7) UNCOMMENT, FOR DEMONSTRATION
+
 graph.add_edge("Node1", "Node2", 50)
-graph.add_edge("Node2", "Node3", 20)
-graph.add_edge("Node2", "Node5", 10)
-graph.add_edge("Node4", "Node2", 300)
-graph.add_edge("Node6", "Node2", 2)
+graph.add_edge("Node2", "Node3", 50)
+graph.add_edge("Node2", "Node5", 50)
+graph.add_edge("Node4", "Node2", 50)
+graph.add_edge("Node6", "Node2", 50)
+
+
+#graph.add_edge("Node6", "Node7", 50)   UNCOMMENT, FOR DEMONSTRATION
+#graph.add_edge("Node2", "Node7", 50)
 
 #ant.get_next_node(get_probabilities())
 
@@ -43,7 +51,7 @@ def main():
     Vis.generate_node_coordinates(graph)
     visual = Vis()
 
-    aco = ACO(graph, 1)
+    aco = ACO(graph, 5)
 
     # setup code for pygame loop
     running = True
@@ -67,6 +75,10 @@ def main():
                 next_node = ant.get_next_node(probabilities)
                 # set target
                 ant.set_target_node(next_node)
+
+            # if unvisited nodes list is empty (all nodes are visited)
+            elif not ant.get_unvisited_nodes():
+                print("All nodes are visited")
 
 
         # Clear the screen
