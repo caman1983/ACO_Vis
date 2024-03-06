@@ -76,9 +76,6 @@ def main():
                 # set target
                 ant.set_target_node(next_node)
 
-            # if unvisited nodes list is empty (all nodes are visited)
-            elif not ant.get_unvisited_nodes():
-                print("All nodes are visited")
 
 
         # Clear the screen
