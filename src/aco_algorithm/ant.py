@@ -35,7 +35,7 @@ class Ant:
         self.current_node = start_node  # the ants current node on the graph, beginning as the starting node
         self.__current_position = self.graph.get_node_coordinates(start_node)  # current x,y coordinate values of ant
         self.__target_node_id = None  # initialise as none as a target has not been selected yet
-        self.__speed = 1
+        self.__speed = 5
 
         self.FINAL_TARGET_NODE = "Node7"    # hard coded
 
@@ -100,31 +100,31 @@ class Ant:
 
         # iterate through list of traversal nodes
         for node in connected_nodes:
-            if node in self.unvisited_nodes:
-                # get pheromone level between current node and potential next node
-                # todo: ensure this works as intended, what if the order is not as expected
-                pheromone_level = self.graph.get_pheromone_level((self.current_node, node))
-                # get distance metric between current node and potential next node
-                distance = self.graph.get_distance((self.current_node, node))
 
-                # eta = inverse of distance
-                distance_inverse = 1 / distance
-                # todo better implement
-                if distance <= 0:
-                    raise Exception("Critical error: Distance between nodes cannot be less then zero")
+            # get pheromone level between current node and potential next node
+            # todo: ensure this works as intended, what if the order is not as expected
+            pheromone_level = self.graph.get_pheromone_level((self.current_node, node))
+            # get distance metric between current node and potential next node
+            distance = self.graph.get_distance((self.current_node, node))
 
-                # times pheromone level by inverse of distance
-                node_potential = pheromone_level * distance_inverse
-                probabilities.append((node, node_potential))
+            # eta = inverse of distance
+            distance_inverse = 1 / distance
+            # todo better implement
+            if distance <= 0:
+                raise Exception("Critical error: Distance between nodes cannot be less then zero")
 
-                # summation of all node probabilities
-                total += node_potential
+            # times pheromone level by inverse of distance
+            node_potential = pheromone_level * distance_inverse
+            probabilities.append((node, node_potential))
 
-            # todo: review and comment!!!!!
-            normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
-            print("Traversal probabilities:", normalised_probabilities)
-            return normalised_probabilities
-            # todo: returns an empty list if there is nowhere else the ant can go
+            # summation of all node probabilities
+            total += node_potential
+
+        # todo: review and comment!!!!!
+        normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
+        print("Traversal probabilities:", normalised_probabilities)
+        return normalised_probabilities
+        # todo: returns an empty list if there is nowhere else the ant can go
 
     # determines and returns next node based on probabilities calculated
     def get_next_node(self, probabilities: list[tuple[str, float]]) -> str:
@@ -137,19 +137,11 @@ class Ant:
             node_id, probability = zip(*probabilities)
             next_node = random.choices(node_id, weights=probability, k=1)[0]
 
-            # if ant has reached final target
-            if self.current_node == self.FINAL_TARGET_NODE:
-                # return starting node id, ant will return to starting node
-                return self.STARTING_NODE_ID
-
-            # if ant has not reached final target
-            else:
-                # Update ant state
-                self.path.append(next_node)  # add ants next node to path
-                print("Path:", self.path)
-                self.unvisited_nodes.remove(next_node)
-                print("Next target:", next_node)
-                return next_node
+            # Update ant state
+            self.path.append(next_node)  # add ants next node to path
+            print("Path:", self.path)
+            print("Next target:", next_node)
+            return next_node
 
         # todo: if ant has no where to go (probabilities list is not populated)
         # if probabilities list is empty (ant has nowhere to go) return last path in node

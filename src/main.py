@@ -73,9 +73,19 @@ def main():
         # draw ants on every game loop interation
         visual.draw_ants(aco)
 
+
         for ant in aco.ants:
             if ant.has_target_node():  # if ant has a target node
                 ant.move_toward_target()
+
+
+            if ant.current_node == ant.FINAL_TARGET_NODE:
+                ant.set_target_node(ant.STARTING_NODE_ID)
+                temp = set(ant.path)
+
+                final_path = ant.path
+                graph.evaporate(0.1)
+                graph.update_pheromones_for_path(final_path)
 
             # if ant does not have a target node, set one todo: if target node has been reached this runs (check)
             elif not ant.has_target_node():
@@ -85,6 +95,8 @@ def main():
                 next_node = ant.get_next_node(probabilities)
                 # set target
                 ant.set_target_node(next_node)
+
+
 
 
 

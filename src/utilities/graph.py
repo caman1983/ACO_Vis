@@ -59,12 +59,14 @@ class Graph:
     # todo: should this function node be in the ACO class?
     def update_pheromones(self, start_nodeID: str, end_nodeID: str, new_level: float) -> None:
         # todo: why is this implementation different to the one on line 38
-        if (start_nodeID, end_nodeID) in self.pheromone_levels:
-            # if start node and end node present and linked (a tuple of the two exists) update pheromone levels to given float
-            self.pheromone_levels[(start_nodeID, end_nodeID)] = new_level
+        sorted_edges = tuple(sorted((start_nodeID, end_nodeID)))
 
-        else:
-            raise Exception("An edge between", start_nodeID, "and", end_nodeID, "does not exist.")
+        #if start_nodeID in self.pheromone_levels and end_nodeID in self.pheromone_levels:
+            # if start node and end node present and linked (a tuple of the two exists) update pheromone levels to given float
+        self.pheromone_levels[sorted_edges] = new_level
+
+        #else:
+            #raise Exception("An edge between", start_nodeID, "and", end_nodeID, "does not exist.")
 
     # todo: should this not be in the aco class?
     # todo: review maths behind this (pheromone evaporation rule) CHANGE THIS FUNCTION
@@ -117,9 +119,16 @@ class Graph:
         else:
             raise Exception("add error message")
 
-
     # print node dictionary contents in readable format
     def print_node_dict(self) -> None:
         print("Dictionary contains:", self.nodes_dict)
         print("Dictionary Keys:", self.nodes_dict.keys())
         print("Dictionary Values:", self.nodes_dict.values())
+
+    def update_pheromones_for_path(self, path):
+        PHEROMONE_INCREMENT = 2
+
+        for i in range(len(path) - 1):
+            start_node = path[i]
+            end_node = path[i + 1]
+            self.update_pheromones(start_node, end_node, PHEROMONE_INCREMENT)
