@@ -61,7 +61,7 @@ def main():
     Vis.generate_node_coordinates(graph)
     visual = Vis()
 
-    aco = ACO(graph, 1)
+    aco = ACO(graph, 8)
 
     # setup code for pygame loop
     running = True
