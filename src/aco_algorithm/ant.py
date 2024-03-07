@@ -155,7 +155,7 @@ class Ant:
                 self.set_target_node(backtrack_node)
                 return self.__target_node_id
 
-            else:  # todo: why does this else statement run when all nodes are visited??
+            else:  # todo: why does this else statement run when all nodes are visited?? - if len cond is not satisfied
                 print("all nodes have been visited, returning home...", self.unvisited_nodes)
                 # if ant has nowhere to go, set target node to home node and return home node
                 self.set_target_node(self.STARTING_NODE_ID)
@@ -181,6 +181,9 @@ class Ant:
 
     def get_current_position(self):
         return self.__current_position
+
+    def get_current_node(self):
+        return self.__current_node
 
     def get_unvisited_nodes(self):
         return self.unvisited_nodes

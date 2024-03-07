@@ -73,7 +73,7 @@ class Graph:
         # iterates through pheromone_level dictionary, where edge = key (tuple) and pheromone_level = pair value
         for edge, pheromone_level in self.pheromone_levels.items():
             # change current edges pheromone level by evaporation rate
-            self.pheromone_levels[edge] = pheromone_level * (1 - evaporation_rate)
+            self.pheromone_levels[edge] = pheromone_level * (1 - 0.25)  # todo: hardcoded evap rate for now
 
     # if given node id present in dictionary key,
     # returns a list of connected edges, excluding given node
@@ -116,7 +116,6 @@ class Graph:
             return node.coordinates
         else:
             raise Exception("add error message")
-
 
     # print node dictionary contents in readable format
     def print_node_dict(self) -> None:

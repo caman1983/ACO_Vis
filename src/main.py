@@ -72,10 +72,11 @@ def main():
         visual.draw_ants(aco)
 
         for ant in aco.ants:
-            if ant.has_target_node():  # if ant has a target node
+            if ant.has_target_node():  # if ant has a target node, runs until target node is reached
                 ant.move_toward_target()
 
-            # if ant does not have a target node, set one
+            # if ant does not have a target node, set one - only runs when ant has reached target
+            # when ant has reached its target, set a new one
             elif not ant.has_target_node():
                 # get probabilities based on probability decision rule
                 probabilities = ant.get_probabilities()
@@ -83,6 +84,10 @@ def main():
                 next_node = ant.get_next_node(probabilities)
                 # set target
                 ant.set_target_node(next_node)
+
+
+                graph.update_pheromones(ant.get_current_node(), next_node, 2)
+
         ## demo
 
 
