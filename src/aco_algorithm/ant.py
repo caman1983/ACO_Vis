@@ -120,6 +120,7 @@ class Ant:
             # summation of all node probabilities
             total += node_potential
 
+        # runs at end of loop
         # todo: review and comment!!!!!
         normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
         print("Traversal probabilities:", normalised_probabilities)

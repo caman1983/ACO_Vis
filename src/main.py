@@ -61,7 +61,7 @@ def main():
     Vis.generate_node_coordinates(graph)
     visual = Vis()
 
-    aco = ACO(graph, 8)
+    aco = ACO(graph, 1)
 
     # setup code for pygame loop
     running = True
@@ -81,9 +81,8 @@ def main():
 
             if ant.current_node == ant.FINAL_TARGET_NODE:
                 ant.set_target_node(ant.STARTING_NODE_ID)
-                temp = set(ant.path)
+                final_path = list(set(ant.path))
 
-                final_path = ant.path
                 graph.evaporate(0.1)
                 graph.update_pheromones_for_path(final_path)
 
