@@ -38,7 +38,7 @@ class Graph:
 
     # Check if both nodeIDs are present in node dictionary and link with given distance metric if true
     def add_edge(self, start_nodeID: str, end_nodeID: str, distance: float) -> None:
-        # Sort the node ID's to ensure consistency in storage and queries
+        # Sort the node ID's to ensure consistency in storage and queries - order does not matter
         sorted_edges = tuple(sorted((start_nodeID, end_nodeID)))
 
         # If given nodeID's present in nodes dictionary
