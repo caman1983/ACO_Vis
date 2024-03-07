@@ -22,7 +22,7 @@ class Ant:
         # pass graph object to class level
         self.graph = graph
         # list to record path taken by ant, begin with starting node
-        self.path = [start_node]
+        self.path = [start_node]  # todo: acts as a stack data stucture
 
         # constant, a record of the home node
         self.STARTING_NODE_ID = start_node
