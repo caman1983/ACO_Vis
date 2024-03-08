@@ -27,10 +27,9 @@ class Ant:
         # constant, a record of the home node
         self.STARTING_NODE_ID = start_node
 
-
         # for movement
         self.__current_node = start_node  # the ants current node on the graph, beginning as the starting node
-        self.last_node = None # Track the previous node to avoid traversal looping
+        self.__previous_node = None  # Track the previous node to avoid traversal looping
         self.__current_position = self.graph.get_node_coordinates(start_node)  # current x,y coordinate values of ant
         self.__target_node_id = None  # initialise as none as a target has not been selected yet
         self.__speed = 5
@@ -64,6 +63,9 @@ class Ant:
         else:
             # if ant has reached target node, update ant state todo: change following lines to method
 
+            # Update the previous node before changing the current node
+            self.__previous_node = self.__current_node
+
             # set current position (coordinates) to target node, as target node is reached
             self.__current_position = target_node_coordinates
 
@@ -82,7 +84,6 @@ class Ant:
     
     
     """
-
     def get_probabilities(self) -> list[tuple[str, float]]:
         probabilities = []
         total = 0
@@ -91,8 +92,8 @@ class Ant:
         beta = 1
 
         # list of connected nodes minus the current node
-        # get list of connected nodes to current node
-        connected_nodes = self.graph.get_connected_nodes(self.__current_node)
+        # get list of connected nodes to current node, excluding previous node
+        connected_nodes = self.graph.get_connected_nodes(self.__current_node, self.__previous_node)
 
         # iterate through list of traversal nodes
         for node in connected_nodes:
@@ -177,9 +178,13 @@ class Ant:
     def set_current_node(self, node_id: str):
         self.__current_node = node_id
 
+    def set_previous_node(self, prev_node_id: str):
+        self.__previous_node = prev_node_id
+
     def get_current_position(self):
         return self.__current_position
 
     def get_current_node(self):
         return self.__current_node
+
 

@@ -81,21 +81,18 @@ class Graph:
     # returns a list of connected edges, excluding given node
     # todo: explain this function
     # get connected nodes to given node
-    def get_connected_nodes(self, node_id: str) -> List[str]:
+    def get_connected_nodes(self, node_id: str, prev_node_id: str) -> List[str]:
         connected_nodes = []
         # iterate through tuple key in edges dictionary
         for edges in self.edges_dict.keys():
             # check if node_id present in keys
             if node_id in edges:
                 # todo: review
-                connected_nodes.append(edges[1] if edges[0] == node_id else edges[0])
-        # return list of connected nodes, excluding given node
-
-        # todo: redundant???
-        if not connected_nodes:
-            raise Exception("No connected nodes: line 92 graph")
-        else:
-            return connected_nodes
+                other_node = edges[0] if edges[1] == node_id else edges[1]
+                if other_node != prev_node_id:
+                    connected_nodes.append(other_node)
+        # return list of connected nodes, excluding given node and previous node
+        return connected_nodes
 
     # returns distance between two given nodes (edges_dictionary key)
     # todo: why does sorting work

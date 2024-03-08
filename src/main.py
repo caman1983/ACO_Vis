@@ -75,7 +75,7 @@ def main():
             if ant.has_target_node():  # if ant has a target node, runs until target node is reached
                 ant.move_toward_target()
 
-            # if ant does not have a target node, set one - only runs when ant has reached target
+            # if ant does not have a target node, set one - only runs when ant has reached target OR when the program starts
             # when ant has reached its target, set a new one
             elif not ant.has_target_node():
                 # get probabilities based on probability decision rule
