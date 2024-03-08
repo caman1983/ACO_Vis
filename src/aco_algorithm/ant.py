@@ -27,12 +27,10 @@ class Ant:
         # constant, a record of the home node
         self.STARTING_NODE_ID = start_node
 
-        # set to record unvisited nodes, starts with full list of all nodes in graph - starting node
-        self.unvisited_nodes = set(graph.nodes_dict) - {start_node}
-        # print("For debugging, set of unvisited nodes:", self.unvisited_nodes)
 
         # for movement
         self.__current_node = start_node  # the ants current node on the graph, beginning as the starting node
+        self.last_node = None # Track the previous node to avoid traversal looping
         self.__current_position = self.graph.get_node_coordinates(start_node)  # current x,y coordinate values of ant
         self.__target_node_id = None  # initialise as none as a target has not been selected yet
         self.__speed = 5
@@ -99,26 +97,26 @@ class Ant:
         # iterate through list of traversal nodes
         for node in connected_nodes:
 
-            # if current node has not been visited
-            if node in self.unvisited_nodes:
-                # get pheromone level between current node and potential next node
-                # todo: ensure this works as intended, what if the order is not as expected
-                pheromone_level = self.graph.get_pheromone_level((self.__current_node, node))
-                # get distance metric between current node and potential next node
-                distance = self.graph.get_distance((self.__current_node, node))
+            # get pheromone level between current node and potential next node
+            # todo: ensure this works as intended, what if the order is not as expected
+            pheromone_level = self.graph.get_pheromone_level((self.__current_node, node))
+            # get distance metric between current node and potential next node
+            distance = self.graph.get_distance((self.__current_node, node))
 
-                # eta = inverse of distance
-                distance_inverse = 1 / distance
-                # todo better implement
-                if distance <= 0:
-                    raise Exception("Critical error: Distance between nodes cannot be less then zero")
+            # eta = inverse of distance
+            distance_inverse = 1 / distance
+            # todo better implement
+            if distance <= 0:
+                raise Exception("Critical error: Distance between nodes cannot be less then zero")
 
-                # times pheromone level by inverse of distance
-                node_potential = pheromone_level * distance_inverse
-                probabilities.append((node, node_potential))
+            # times pheromone level by inverse of distance
+            node_potential = pheromone_level * distance_inverse
+            probabilities.append((node, node_potential))
 
-                # summation of all node probabilities
-                total += node_potential
+            # summation of all node probabilities
+            total += node_potential
+
+        # runs upon end of for nodes loop
         # todo: review and comment!!!!!
         normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
         print("Traversal probabilities:", normalised_probabilities)
@@ -139,14 +137,14 @@ class Ant:
             # Update ant state
             self.path.append(next_node)  # add ants next node to path
             print("Path:", self.path)
-            self.unvisited_nodes.remove(next_node)  # remove next node from unvisited
+
             print("Next target:", next_node)
             return next_node
 
         # todo: why is this else satisfied when ant has nowhere to go - probabilities list is not populated
         # if probabilities list is empty (ant has nowhere to go) return last path in node
         elif not probabilities:
-            print("Nowhere else to go, unvisited nodes list is not empty. Backtracking...")
+            print("Nowhere else to go, backtracking...")
 
             if len(self.path) > 1:
                 self.path.pop()  # Remove current node from path
@@ -156,7 +154,7 @@ class Ant:
                 return self.__target_node_id
 
             else:  # todo: why does this else statement run when all nodes are visited?? - if len cond is not satisfied
-                print("all nodes have been visited, returning home...", self.unvisited_nodes)
+                print("all nodes have been visited, returning home...")
                 # if ant has nowhere to go, set target node to home node and return home node
                 self.set_target_node(self.STARTING_NODE_ID)
 
@@ -185,5 +183,3 @@ class Ant:
     def get_current_node(self):
         return self.__current_node
 
-    def get_unvisited_nodes(self):
-        return self.unvisited_nodes
