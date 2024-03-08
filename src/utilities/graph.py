@@ -58,13 +58,15 @@ class Graph:
 
     # todo: should this function node be in the ACO class?
     def update_pheromones(self, start_nodeID: str, end_nodeID: str, new_level: float) -> None:
-        # todo: why is this implementation different to the one on line 38
-        if (start_nodeID, end_nodeID) in self.pheromone_levels:
-            # if start node and end node present and linked (a tuple of the two exists) update pheromone levels to given float
-            self.pheromone_levels[(start_nodeID, end_nodeID)] = new_level
+        sorted_edges = tuple(sorted((start_nodeID, end_nodeID)))
 
-        else:
-            raise Exception("An edge between", start_nodeID, "and", end_nodeID, "does not exist.")
+
+        #if (start_nodeID, end_nodeID) in self.pheromone_levels: # todo: not working as intended, commented out for now
+            # if start node and end node present and linked (a tuple of the two exists) update pheromone levels to given float
+        self.pheromone_levels[sorted_edges] = new_level
+
+        #else:
+            #raise Exception("An edge between", start_nodeID, "and", end_nodeID, "does not exist.")
 
     # todo: should this not be in the aco class?
     # todo: review maths behind this (pheromone evaporation rule) CHANGE THIS FUNCTION

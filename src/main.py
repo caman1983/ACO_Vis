@@ -85,7 +85,7 @@ def main():
                 # set target
                 ant.set_target_node(next_node)
 
-
+                # update pheromone between edge of current node and target node, when target node is reached
                 graph.update_pheromones(ant.get_current_node(), next_node, 2)
 
         ## demo
