@@ -111,6 +111,7 @@ def main():
 
     pygame.quit()
 
+#example of looping code
 
 # todo: set a target node for the ant, update pheromones
 
