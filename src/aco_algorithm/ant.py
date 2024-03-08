@@ -32,7 +32,7 @@ class Ant:
         self.__previous_node = None  # Track the previous node to avoid traversal looping
         self.__current_position = self.graph.get_node_coordinates(start_node)  # current x,y coordinate values of ant
         self.__target_node_id = None  # initialise as none as a target has not been selected yet
-        self.__speed = 5
+        self.__speed = 1
 
         print("Starting node:", self.__current_node)
 
@@ -91,8 +91,7 @@ class Ant:
         alpha = 1
         beta = 1
 
-        # list of connected nodes minus the current node
-        # get list of connected nodes to current node, excluding previous node
+        # get list of connected nodes to current node, excluding current and previous node
         connected_nodes = self.graph.get_connected_nodes(self.__current_node, self.__previous_node)
 
         # iterate through list of traversal nodes
