@@ -2,6 +2,7 @@ import random
 
 from src.utilities.graph import Graph
 
+# THE WHOLE IDEA IS TO PROMOTE LOW COST PATHS
 
 # n = distance to "food"
 # t = pheromone level
@@ -15,6 +16,7 @@ from src.utilities.graph import Graph
 
 # Eta = inverse of distance
 # Tau = current pheromone level
+# Q = determines pheromone deposited by each ant - a constant
 
 # todo: SHOULD NOT MODIFY THE GRAPHS STATE, IF IT DOES CREATE METHODS IN GRAPH AND CALL THEM
 class Ant:
@@ -29,7 +31,7 @@ class Ant:
 
         # for movement
         self.__current_node = start_node  # the ants current node on the graph, beginning as the starting node
-        self.__previous_node = None  # Track the previous node to avoid traversal looping
+        self.__previous_node = None  # Track the previous node to avoid immediate backtracking
         self.__current_position = self.graph.get_node_coordinates(start_node)  # current x,y coordinate values of ant
         self.__target_node_id = None  # initialise as none as a target has not been selected yet
         self.__speed = 1
