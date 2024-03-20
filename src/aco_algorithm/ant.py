@@ -117,7 +117,7 @@ class Ant:
         # runs upon end of for nodes loop
         # todo: review and comment!!!!!
         normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
-
+        print("------------------------------------")
         print("Traversal probabilities:", normalised_probabilities) #todo: print trav possibilities
 
         return normalised_probabilities
