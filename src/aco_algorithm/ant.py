@@ -152,6 +152,7 @@ class Ant:
                 self.path.pop()  # Remove current node from path
                 backtrack_node = self.path[-1]
 
+                # todo: should return next node, target node is set in main program loop (check main)
                 self.set_target_node(backtrack_node)
                 return self.__target_node_id
 

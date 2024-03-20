@@ -27,16 +27,7 @@ node7 = Node("Node7")
 graph.add_node(node1)
 graph.add_node(node2)
 graph.add_node(node3)
-
-
-graph.add_node(node6)
-graph.add_node(node7)
-
-graph.add_node(node5)
-
 graph.add_node(node4)
-
-
 
 
 
@@ -53,21 +44,8 @@ graph.add_node(node4)
 
 
 graph.add_edge("Node1", "Node2", 1)
-# path one
-graph.add_edge("Node2", "Node6", 1)
-graph.add_edge("Node6", "Node7", 1)
-
-
 graph.add_edge("Node1", "Node3", 1)
-# path two
-graph.add_edge("Node3", "Node4", 1)
-graph.add_edge("Node4", "Node5", 1)
-
-
-
-
-graph.add_edge("Node5", "Node7", 1)
-
+graph.add_edge("Node1", "Node4", 1)
 
 
 
@@ -120,7 +98,7 @@ def main():
 
 
 
-                if path_length != 0:
+                if path_length != 0:    # todo: why is this here
                     current_node = ant.get_current_node()
 
                     new_pheromone_level = 1 / path_length
