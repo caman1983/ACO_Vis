@@ -76,12 +76,8 @@ class Ant:
 
             self.__target_node_id = None  # Reset target node to allow selection of a new target
 
-    # todo: should be in graph class
-    # probability function
-    # traverse to next node from current node, based on todo: finish and explain
-
     # this function in just getting probabilities, it is also getting connected nodes, and checking if a node has been visited
-    # todo: THIS FUNCTION SHOULD NOT UPDATE ANY STATES
+    # todo: THIS FUNCTION SHOULD NOT UPDATE ANY STATES - should be in graph class?
     """ Calculates probabilities for traversal of unvisited connected nodes
     
     
@@ -162,6 +158,24 @@ class Ant:
 
                 return self.__target_node_id
                 # raise Exception(f"Ant at {self.current_node} has no unvisited neighbors to move to.")
+
+
+    # todo: should this be in ant or graph
+    def get_path_length(self):
+        total_length = 0
+
+        # iterate i amount of times where i is the length (size of path variable) -1
+        # -1 because the last node does not lead to any other node
+        for i in range(len(self.path) - 1):
+            # get distance between current node element and next node element
+            edge_length = self.graph.get_distance((self.path[i], self.path[i+1]))
+            total_length += edge_length
+
+        return total_length
+
+
+
+
 
     # functions to access and modify private variables, enforcing encapsulation
     # getters setters etc

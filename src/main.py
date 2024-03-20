@@ -13,7 +13,8 @@ node1 = Node("Node1")
 node2 = Node("Node2")
 node3 = Node("Node3")
 node4 = Node("Node4")
-#node5 = Node("Node5")
+
+node5 = Node("Node5")
 #node6 = Node("Node6")
 
 #node7 = Node("Node7")
@@ -28,6 +29,8 @@ graph.add_node(node2)
 graph.add_node(node3)
 graph.add_node(node4)
 
+
+
 # adding it here makes sure it's in the middle
 #graph.add_node(node7)
 #graph.add_node(node8)
@@ -39,24 +42,16 @@ graph.add_node(node4)
 
 
 
-graph.add_edge("Node1", "Node2", 14)
-graph.add_edge("Node1", "Node3", 14)
-graph.add_edge("Node1", "Node4", 10)
-#graph.add_edge("Node1", "Node6", 5)
-
-#graph.add_edge("Node6", "Node5", 1)
-#graph.add_edge("Node5", "Node7", 2)
-
-
-#graph.add_edge("Node1", "Node8", 2)
+graph.add_edge("Node1", "Node2", 5)
+graph.add_edge("Node1", "Node3", 5)
+graph.add_edge("Node1", "Node4", 5)
 
 
 
-#ant.get_next_node(get_probabilities())
 
-#or
 
-#ant.get_next_node().probabilities() ?????
+
+
 
 
 def main():
@@ -90,8 +85,9 @@ def main():
                 # set target
                 ant.set_target_node(next_node)
 
-                # update pheromone between edge of current node and target node, when target node is reached
+                # update pheromone between edge of current node and target node
                 graph.update_pheromones(ant.get_current_node(), next_node, 2)
+
 
         ## demo
 
