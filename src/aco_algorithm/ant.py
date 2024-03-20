@@ -144,7 +144,7 @@ class Ant:
             return next_node
 
         # todo: why is this else satisfied when ant has nowhere to go - probabilities list is not populated
-        # if probabilities list is empty (ant has nowhere to go) return last path in node
+        # if probabilities list is empty (ant has nowhere to go) return last node in path
         elif not probabilities:
             #print("Nowhere else to go, backtracking...")
 
