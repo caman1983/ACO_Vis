@@ -118,7 +118,7 @@ class Ant:
         # todo: review and comment!!!!!
         normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
 
-        #print("Traversal probabilities:", normalised_probabilities) todo: print trav possibilities
+        print("Traversal probabilities:", normalised_probabilities) #todo: print trav possibilities
 
         return normalised_probabilities
         # todo: returns an empty list if all nodes are visited OR there is nowhere else the ant can go
@@ -137,7 +137,7 @@ class Ant:
             # Update ant state
             self.path.append(next_node)  # add ants next node to path
 
-            #print("Path:", self.path) todo: print path
+            print("Path:", self.path)  #todo: print path
 
             #print("Next target:", next_node) todo: print next target
 
@@ -146,7 +146,7 @@ class Ant:
         # todo: why is this else satisfied when ant has nowhere to go - probabilities list is not populated
         # if probabilities list is empty (ant has nowhere to go) return last path in node
         elif not probabilities:
-            print("Nowhere else to go, backtracking...")
+            #print("Nowhere else to go, backtracking...")
 
             if len(self.path) > 1:
                 self.path.pop()  # Remove current node from path
@@ -155,7 +155,7 @@ class Ant:
                 self.set_target_node(backtrack_node)
                 return self.__target_node_id
 
-            else:  # todo: why does this else statement run when all nodes are visited?? - if len cond is not satisfied
+            else:  # todo: why does this else statement run when all nodes are visited?? - if len cond is not satisfied     DOES NOT RUN
                 print("all nodes have been visited, returning home...")
                 # if ant has nowhere to go, set target node to home node and return home node
                 self.set_target_node(self.STARTING_NODE_ID)

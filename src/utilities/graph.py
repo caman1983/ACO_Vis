@@ -121,3 +121,7 @@ class Graph:
         print("Dictionary contains:", self.nodes_dict)
         print("Dictionary Keys:", self.nodes_dict.keys())
         print("Dictionary Values:", self.nodes_dict.values())
+
+
+    def print_pheromone_levels(self):
+        print("Pheromones:", self.pheromone_levels)

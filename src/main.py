@@ -15,9 +15,9 @@ node3 = Node("Node3")
 node4 = Node("Node4")
 
 node5 = Node("Node5")
-#node6 = Node("Node6")
+node6 = Node("Node6")
 
-#node7 = Node("Node7")
+node7 = Node("Node7")
 
 #node8 = Node("Node8")
 
@@ -27,7 +27,17 @@ node5 = Node("Node5")
 graph.add_node(node1)
 graph.add_node(node2)
 graph.add_node(node3)
+
+
+graph.add_node(node6)
+graph.add_node(node7)
+
+graph.add_node(node5)
+
 graph.add_node(node4)
+
+
+
 
 
 
@@ -42,9 +52,23 @@ graph.add_node(node4)
 
 
 
-graph.add_edge("Node1", "Node2", 10)
-graph.add_edge("Node1", "Node3", 10)
-graph.add_edge("Node1", "Node4", 10)
+graph.add_edge("Node1", "Node2", 1)
+# path one
+graph.add_edge("Node2", "Node6", 1)
+graph.add_edge("Node6", "Node7", 1)
+
+
+graph.add_edge("Node1", "Node3", 1)
+# path two
+graph.add_edge("Node3", "Node4", 1)
+graph.add_edge("Node4", "Node5", 1)
+
+
+
+
+graph.add_edge("Node5", "Node7", 1)
+
+
 
 
 
@@ -103,6 +127,8 @@ def main():
 
                     graph.update_pheromones(current_node, next_node, new_pheromone_level)
 
+                    graph.print_pheromone_levels()
+
                     #current_pheromone = graph.get_pheromone_level((current_node, next_node))
 
 
@@ -113,7 +139,7 @@ def main():
 
 
         # Clear the screen
-        visual.clear_screen()
+            visual.clear_screen()
 
         # Draw the graph
         visual.draw_graph(graph)
