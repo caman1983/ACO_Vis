@@ -97,7 +97,7 @@ def main():
                     graph.evaporate(0.05)
 
 
-
+                # should this be indented?
                 if path_length != 0:    # todo: why is this here
                     current_node = ant.get_current_node()
 
