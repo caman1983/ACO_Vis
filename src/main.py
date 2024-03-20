@@ -43,9 +43,9 @@ graph.add_node(node4)
 
 
 
-graph.add_edge("Node1", "Node2", 1)
-graph.add_edge("Node1", "Node3", 1)
-graph.add_edge("Node1", "Node4", 1)
+graph.add_edge("Node1", "Node2", 10)
+graph.add_edge("Node1", "Node3", 10)
+graph.add_edge("Node1", "Node4", 10)
 
 
 
