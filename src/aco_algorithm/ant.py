@@ -36,7 +36,7 @@ class Ant:
         self.__target_node_id = None  # initialise as none as a target has not been selected yet
         self.__speed = 1
 
-        print("Starting node:", self.__current_node)
+        #print("Starting node:", self.__current_node) todo: print starting node
 
     # todo: review func, study this, why does it work
     def move_toward_target(self):
@@ -117,7 +117,9 @@ class Ant:
         # runs upon end of for nodes loop
         # todo: review and comment!!!!!
         normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
-        print("Traversal probabilities:", normalised_probabilities)
+
+        #print("Traversal probabilities:", normalised_probabilities) todo: print trav possibilities
+
         return normalised_probabilities
         # todo: returns an empty list if all nodes are visited OR there is nowhere else the ant can go
 
@@ -134,9 +136,11 @@ class Ant:
 
             # Update ant state
             self.path.append(next_node)  # add ants next node to path
-            print("Path:", self.path)
 
-            print("Next target:", next_node)
+            #print("Path:", self.path) todo: print path
+
+            #print("Next target:", next_node) todo: print next target
+
             return next_node
 
         # todo: why is this else satisfied when ant has nowhere to go - probabilities list is not populated
@@ -174,9 +178,6 @@ class Ant:
         return total_length
 
 
-
-
-
     # functions to access and modify private variables, enforcing encapsulation
     # getters setters etc
     # doing this instead of modifying variables from outside their class
@@ -201,5 +202,8 @@ class Ant:
 
     def get_current_node(self):
         return self.__current_node
+
+    def get_previous_node(self):
+        return self.__previous_node
 
 

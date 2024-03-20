@@ -42,9 +42,9 @@ graph.add_node(node4)
 
 
 
-graph.add_edge("Node1", "Node2", 5)
-graph.add_edge("Node1", "Node3", 5)
-graph.add_edge("Node1", "Node4", 5)
+graph.add_edge("Node1", "Node2", 10)
+graph.add_edge("Node1", "Node3", 10)
+graph.add_edge("Node1", "Node4", 10)
 
 
 
@@ -80,13 +80,33 @@ def main():
             elif not ant.has_target_node():
                 # get probabilities based on probability decision rule
                 probabilities = ant.get_probabilities()
+
+                # must be here as calling get_next_node removes current node from path if nowhere to go
+                path_length = ant.get_path_length()
+
                 # get next node based on probabilities
                 next_node = ant.get_next_node(probabilities)
                 # set target
                 ant.set_target_node(next_node)
 
-                # update pheromone between edge of current node and target node
-                graph.update_pheromones(ant.get_current_node(), next_node, 2)
+                # ---------------- TESTING PHEROMONE DEPOSITING
+                # loop runs when ant reaches its target and previous node is not none (ant has not just spawned)
+                if ant.get_previous_node() is not None:
+                    graph.evaporate(0.05)
+
+
+
+                if path_length != 0:
+                    current_node = ant.get_current_node()
+
+                    new_pheromone_level = 1 / path_length
+
+                    graph.update_pheromones(current_node, next_node, new_pheromone_level)
+
+                    #current_pheromone = graph.get_pheromone_level((current_node, next_node))
+
+
+
 
 
         ## demo

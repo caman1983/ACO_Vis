@@ -63,7 +63,7 @@ class Graph:
 
         #if (start_nodeID, end_nodeID) in self.pheromone_levels: # todo: not working as intended, commented out for now
             # if start node and end node present and linked (a tuple of the two exists) update pheromone levels to given float
-        self.pheromone_levels[sorted_edges] = new_level
+        self.pheromone_levels[sorted_edges] += new_level
 
         #else:
             #raise Exception("An edge between", start_nodeID, "and", end_nodeID, "does not exist.")
@@ -75,7 +75,7 @@ class Graph:
         # iterates through pheromone_level dictionary, where edge = key (tuple) and pheromone_level = pair value
         for edge, pheromone_level in self.pheromone_levels.items():
             # change current edges pheromone level by evaporation rate
-            self.pheromone_levels[edge] = pheromone_level * (1 - 0.25)  # todo: hardcoded evap rate for now
+            self.pheromone_levels[edge] = pheromone_level * (1 - evaporation_rate)
 
     # if given node id present in dictionary key,
     # returns a list of connected edges, excluding given node
