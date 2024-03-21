@@ -34,7 +34,7 @@ class Ant:
         self.__previous_node = None  # Track the previous node to avoid immediate backtracking
         self.__current_position = self.graph.get_node_coordinates(start_node)  # current x,y coordinate values of ant
         self.__target_node_id = None  # initialise as none as a target has not been selected yet
-        self.__speed = 1
+        self.__speed = 9
 
         #print("Starting node:", self.__current_node) todo: print starting node
 
@@ -117,8 +117,8 @@ class Ant:
         # runs upon end of for nodes loop
         # todo: review and comment!!!!!
         normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
-        print("------------------------------------")
-        print("Traversal probabilities:", normalised_probabilities) #todo: print trav possibilities
+        ##print("------------------------------------")
+        ##print("Traversal probabilities:", normalised_probabilities) #todo: print trav possibilities
 
         return normalised_probabilities
         # todo: returns an empty list if all nodes are visited OR there is nowhere else the ant can go
@@ -137,7 +137,7 @@ class Ant:
             # Update ant state
             self.path.append(next_node)  # add ants next node to path
 
-            print("Path:", self.path)  #todo: print path
+            ##print("Path:", self.path)  #todo: print path
 
             #print("Next target:", next_node) todo: print next target
 
