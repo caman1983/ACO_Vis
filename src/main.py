@@ -9,28 +9,12 @@ from src.visualisation.vis import Vis
 
 graph = Graph()
 
-node1 = Node("Comedy")
-node2 = Node("Drama")
-node3 = Node("Sci-Fi")
-node4 = Node("Romance")
-node5 = Node("Action")
-node6 = Node("Western")
-node7 = Node("Crime")
-node8 = Node("Horror")
-node9 = Node("War")
-node10 = Node("Adventure")
-
-node11 = Node("Art")
-node12 = Node("Martial arts")
-node13 = Node("Heist")
-node14 = Node("Historical")
-node15 = Node("Superhero")
-node16 = Node("Spy")
-node17 = Node("Fantasy")
-node18 = Node("Mystery")
-node19 = Node("Family")
-node20 = Node("Musical")
-
+node1 = Node("Node1")
+node2 = Node("Node2")
+node3 = Node("Node3")
+node4 = Node("Node4")
+node5 = Node("Node5")
+node6 = Node("Node6")
 
 # populate node dictionary
 graph.add_node(node1)
@@ -39,26 +23,10 @@ graph.add_node(node3)
 graph.add_node(node4)
 graph.add_node(node5)
 graph.add_node(node6)
-graph.add_node(node7)
-graph.add_node(node8)
-graph.add_node(node9)
-graph.add_node(node10)
-
-graph.add_edge("Comedy", "Drama", 12)
-graph.add_edge("Western", "Action", 18)
-graph.add_edge("War", "Action", 5)
-graph.add_edge("Adventure", "Action", 11)
-graph.add_edge("Adventure", "Sci-Fi", 19)
-graph.add_edge("Crime", "Action", 7)
-graph.add_edge("Crime", "Drama", 6)
-graph.add_edge("Action", "Drama", 22)
-graph.add_edge("Horror", "Drama", 14)
-graph.add_edge("Romance", "Drama", 17)
-graph.add_edge("Romance", "Adventure", 17)
-graph.add_edge("Horror", "Drama", 17)
 
 
-
+graph.add_edge("Node1", "Node2", 10)
+graph.add_edge("Node2", "Node3", 1)
 
 
 
@@ -71,7 +39,7 @@ def main():
     Vis.generate_node_coordinates(graph)
     visual = Vis()
 
-    aco = ACO(graph, 20)
+    aco = ACO(graph, 1)
 
     # setup code for pygame loop
     running = True
@@ -111,11 +79,11 @@ def main():
                 if path_length != 0:    # if ant has travelled (path length larger than 0)
                     current_node = ant.get_current_node()
 
-                    new_pheromone_level = 1 / path_length
+                    new_pheromone_level = 5 / path_length
 
                     graph.update_pheromones(current_node, next_node, new_pheromone_level)
 
-                    #graph.print_pheromone_levels()
+                    graph.print_pheromone_levels()
 
                     #current_pheromone = graph.get_pheromone_level((current_node, next_node))
 
