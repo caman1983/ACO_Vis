@@ -9,6 +9,8 @@ from src.visualisation.vis import Vis
 
 graph = Graph()
 
+
+
 node1 = Node("Node1")
 node2 = Node("Node2")
 node3 = Node("Node3")
@@ -26,9 +28,17 @@ graph.add_node(node6)
 
 
 graph.add_edge("Node1", "Node2", 10)
-graph.add_edge("Node2", "Node3", 1)
+graph.add_edge("Node2", "Node3", 10)
+graph.add_edge("Node3", "Node4", 10)
+graph.add_edge("Node4", "Node5", 10)
+graph.add_edge("Node5", "Node6", 14)
+graph.add_edge("Node2", "Node4", 12)
+graph.add_edge("Node1", "Node6", 15)
 
-
+graph.add_edge("Node4", "Node2", 15)
+graph.add_edge("Node3", "Node4", 15)
+graph.add_edge("Node2", "Node5", 15)
+graph.add_edge("Node1", "Node6", 15)
 
 
 
@@ -39,7 +49,7 @@ def main():
     Vis.generate_node_coordinates(graph)
     visual = Vis()
 
-    aco = ACO(graph, 1)
+    aco = ACO(graph, 20)
 
     # setup code for pygame loop
     running = True
@@ -75,13 +85,14 @@ def main():
                     graph.evaporate(0.05)
 
 
-                # should this be indented?
+                # if the ant has travelled to a new node, update pheromones on the edge
                 if path_length != 0:    # if ant has travelled (path length larger than 0)
                     current_node = ant.get_current_node()
+                    previous_node = ant.get_previous_node()
 
-                    new_pheromone_level = 5 / path_length
+                    new_pheromone_level = 1 / path_length
 
-                    graph.update_pheromones(current_node, next_node, new_pheromone_level)
+                    graph.update_pheromones(current_node, previous_node, new_pheromone_level)
 
                     graph.print_pheromone_levels()
 
