@@ -17,6 +17,7 @@ node3 = Node("Node3")
 node4 = Node("Node4")
 node5 = Node("Node5")
 node6 = Node("Node6")
+node7 = Node("Node7")
 
 # populate node dictionary
 graph.add_node(node1)
@@ -25,6 +26,7 @@ graph.add_node(node3)
 graph.add_node(node4)
 graph.add_node(node5)
 graph.add_node(node6)
+
 
 
 graph.add_edge("Node1", "Node2", 10)
