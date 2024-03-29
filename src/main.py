@@ -88,7 +88,7 @@ def main():
 
 
                 # if the ant has travelled to a new node, update pheromones on the edge
-                if path_length != 0:    # if ant has travelled (path length larger than 0)
+                if path_length != 0:    # if ant has travelled (path variable length larger than 0)
                     current_node = ant.get_current_node()
                     previous_node = ant.get_previous_node()
 
@@ -97,8 +97,6 @@ def main():
                     graph.update_pheromones(current_node, previous_node, new_pheromone_level)
 
                     graph.print_pheromone_levels()
-
-                    #current_pheromone = graph.get_pheromone_level((current_node, next_node))
 
 
 
