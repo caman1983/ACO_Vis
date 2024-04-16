@@ -34,7 +34,7 @@ class Ant:
         self.__previous_node = None  # Track the previous node to avoid immediate backtracking
         self.__current_position = self.graph.get_node_coordinates(start_node)  # current x,y coordinate values of ant
         self.__target_node_id = None  # initialise as none as a target has not been selected yet
-        self.__speed = 9
+        self.__speed = 1
 
         #print("Starting node:", self.__current_node) todo: print starting node
 

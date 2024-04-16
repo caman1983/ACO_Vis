@@ -9,41 +9,60 @@ from src.visualisation.vis import Vis
 
 graph = Graph()
 
+import numpy as np
+import pandas as pd
+
+# generate an example synthetic dataset to be used for an input
+np.random.seed(100)
+# Number of content items
+n_contents = 10
+
+# Simulate some content items, creates a list of content item names
+content_items = [f"Content_{i+1}" for i in range(n_contents)]
+
+# Generate random similarity scores between content items (0 to 1)
+# For simplicity, make the similarity matrix symmetric and set the diagonal to 0 (self-similarity ignored)
+similarity_scores = np.random.rand(n_contents, n_contents)
+similarity_scores = (similarity_scores + similarity_scores.T) / 2
+np.fill_diagonal(similarity_scores, 0)
+
+# Create a DataFrame for better readability
+similarity_df = pd.DataFrame(similarity_scores, index=content_items, columns=content_items)
+
+# Generate user preferences for content items
+# For simplicity, assume we have one user with a preference score for each content item
+user_preferences = np.random.rand(n_contents)
+
+# Create a DataFrame for user preferences
+user_preferences_df = pd.DataFrame(user_preferences, index=content_items, columns=["User_Preference"])
+
+(similarity_df.round(2), user_preferences_df.round(2))
+
+# Step 1 & 2: Create nodes and add them to the graph
+for content_id in similarity_df.index:
+    node = Node(content_id)
+    graph.add_node(node)
+
+# Step 3: Create edges based on content similarities
+# We use a threshold to decide whether to create an edge or not
+similarity_threshold = 0.5  # Example threshold
+
+for i, content_id in enumerate(similarity_df.index):
+    for j, related_content_id in enumerate(similarity_df.columns):
+        # Check if similarity score exceeds the threshold and i != j to avoid self-loops
+        if similarity_df.iloc[i, j] > similarity_threshold and i != j:
+            # Here, you can choose to invert the similarity score to represent distance if needed
+            distance = 1 / similarity_df.iloc[i, j]  # Example inversion
+            graph.add_edge(content_id, related_content_id, distance)
 
 
-node1 = Node("Node1")
-node2 = Node("Node2")
-node3 = Node("Node3")
-node4 = Node("Node4")
-node5 = Node("Node5")
-node6 = Node("Node6")
-node7 = Node("Node7")
-
-# populate node dictionary
-graph.add_node(node1)
-graph.add_node(node2)
-graph.add_node(node3)
-graph.add_node(node4)
-graph.add_node(node5)
-graph.add_node(node6)
 
 
 
-graph.add_edge("Node1", "Node2", 10)
-graph.add_edge("Node2", "Node3", 10)
-graph.add_edge("Node3", "Node4", 10)
-graph.add_edge("Node4", "Node5", 10)
-graph.add_edge("Node5", "Node6", 14)
-graph.add_edge("Node2", "Node4", 12)
-graph.add_edge("Node1", "Node6", 15)
-
-graph.add_edge("Node4", "Node2", 15)
-graph.add_edge("Node3", "Node4", 15)
-graph.add_edge("Node2", "Node5", 15)
-graph.add_edge("Node1", "Node6", 15)
 
 
 
+# We can to converge on scores which are similar, balanced with exploration (should be a some content along the solution path which aren't that relevant, promoting new content)
 
 
 def main():
@@ -51,7 +70,7 @@ def main():
     Vis.generate_node_coordinates(graph)
     visual = Vis()
 
-    aco = ACO(graph, 20)
+    aco = ACO(graph, 1)
 
     # setup code for pygame loop
     running = True
@@ -99,12 +118,6 @@ def main():
                     graph.print_pheromone_levels()
 
 
-
-
-
-        ## demo
-
-
         # Clear the screen
             visual.clear_screen()
 
@@ -116,9 +129,6 @@ def main():
         visual.update()
 
     pygame.quit()
-
-
-# todo: set a target node for the ant, update pheromones
 
 if __name__ == '__main__':
     main()

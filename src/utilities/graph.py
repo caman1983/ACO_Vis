@@ -23,6 +23,8 @@ class Graph:
         # Dict[Tuple <- infers the variable is a dictionary, where the key is a tuple of strings (startNode & endNode)
         # ,float <- the pair-value, which is the pheromone concentration
         # if a tuple of two nodes exists, an edge is present between them on the graph
+
+        # key is tuple of connected nodeID's, pair value is pheromone level
         self.pheromone_levels: Dict[Tuple[str, str], float] = {}
 
         self.default_pheromone_level = 1
