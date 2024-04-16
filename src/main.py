@@ -71,10 +71,9 @@ def main():
     visual = Vis()
 
     aco = ACO(graph, 1)
-
+    iteration = 0
     # setup code for pygame loop
-    running = True
-    while running:
+    while iteration < 10000:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -105,6 +104,8 @@ def main():
                 if ant.get_previous_node() is not None:
                     graph.evaporate(0.05)
 
+                iteration += 1
+                print(iteration)
 
                 # if the ant has travelled to a new node, update pheromones on the edge
                 if path_length != 0:    # if ant has travelled (path variable length larger than 0)
@@ -119,7 +120,7 @@ def main():
 
 
         # Clear the screen
-            visual.clear_screen()
+        visual.clear_screen()
 
         # Draw the graph
         visual.draw_graph(graph)
