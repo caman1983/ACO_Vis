@@ -12,7 +12,7 @@ from src.visualisation.vis import Vis
 graph = Graph()
 
 # Generate synthetic data
-sim_data = Similarity_DF(5)
+sim_data = Similarity_DF(20)
 
 # Populate graph with generated symmetric similarity matrix
 # Add nodes
@@ -26,12 +26,21 @@ for i, content_id in enumerate(sim_data.similarity_df.index):
             similarity_score = sim_data.similarity_df.iloc[i, j]
             # Transform to distance (make items with large similarity values shorter paths)
             distance = 1 - similarity_score
-            graph.add_edge(content_id, related_content_id, distance)
+            rounded_distance = round(distance, 2)
+            graph.add_edge(content_id, related_content_id, rounded_distance)
 
-graph_2 = Graph()
-graph_2.
-graph_2.add_node("1")
-graph_2.add_node("2")
+# graph = Graph()
+# node1 = Node("1")
+# node2 = Node("2")
+# node3 = Node("3")
+#
+# graph.add_node(node1)
+# graph.add_node(node2)
+# graph.add_node(node3)
+#
+# graph.add_edge("1", "2", 6)
+# graph.add_edge("1", "3", 4)
+
 
 
 def main():
@@ -39,11 +48,11 @@ def main():
     Vis.generate_node_coordinates(graph)
     visual = Vis()
 
-    aco = ACO(graph, 1)
+    aco = ACO(graph, 50)
     iteration = 0
 
     # setup code for pygame loop
-    while iteration < 2000:
+    while iteration < 5000:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -88,10 +97,10 @@ def main():
                 if ant.get_previous_node() is not None:
                     graph.evaporate(0.05)
 
-                #iteration += 1
-                #print(iteration)
+                iteration += 1
+                print(iteration)
 
-
+            #HELLOO
 
         # Clear the screen
         visual.clear_screen()

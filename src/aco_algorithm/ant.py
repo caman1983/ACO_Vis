@@ -34,7 +34,7 @@ class Ant:
         self.__previous_node = None  # Track the previous node to avoid immediate backtracking
         self.__current_position = self.graph.get_node_coordinates(start_node)  # current x,y coordinate values of ant
         self.__target_node_id = None  # initialise as none as a target has not been selected yet
-        self.__speed = 1
+        self.__speed = 10
 
         #print("Starting node:", self.__current_node) todo: print starting node
 
@@ -103,12 +103,13 @@ class Ant:
 
             # Invert back to promote low cost paths
             desirability = 1 / distance
+            rounded_desirability = round(desirability, 2)
             # todo better implement
             if distance <= 0:
                 raise Exception("Critical error: Distance between nodes cannot be less then zero")
 
             # times pheromone level by inverse of distance
-            node_potential = pheromone_level * desirability
+            node_potential = pheromone_level * rounded_desirability
             probabilities.append((node, node_potential))
 
             # summation of all node probabilities
