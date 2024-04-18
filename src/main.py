@@ -12,7 +12,7 @@ from src.visualisation.vis import Vis
 graph = Graph()
 
 # Generate synthetic data
-sim_data = Similarity_DF(10)
+sim_data = Similarity_DF(5)
 
 # Populate graph with generated symmetric similarity matrix
 # Add nodes
@@ -26,8 +26,12 @@ for i, content_id in enumerate(sim_data.similarity_df.index):
             similarity_score = sim_data.similarity_df.iloc[i, j]
             # Transform to distance (make items with large similarity values shorter paths)
             distance = 1 - similarity_score
-            graph.add_edge(content_id, related_content_id, similarity_score)
+            graph.add_edge(content_id, related_content_id, distance)
 
+graph_2 = Graph()
+graph_2.
+graph_2.add_node("1")
+graph_2.add_node("2")
 
 
 def main():
@@ -35,7 +39,7 @@ def main():
     Vis.generate_node_coordinates(graph)
     visual = Vis()
 
-    aco = ACO(graph, 5)
+    aco = ACO(graph, 1)
     iteration = 0
 
     # setup code for pygame loop
@@ -84,8 +88,8 @@ def main():
                 if ant.get_previous_node() is not None:
                     graph.evaporate(0.05)
 
-                iteration += 1
-                print(iteration)
+                #iteration += 1
+                #print(iteration)
 
 
 
