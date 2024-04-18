@@ -62,13 +62,12 @@ class Graph:
     def update_pheromones(self, start_nodeID: str, end_nodeID: str, new_level: float) -> None:
         sorted_edges = tuple(sorted((start_nodeID, end_nodeID)))
 
-
-        #if (start_nodeID, end_nodeID) in self.pheromone_levels: # todo: not working as intended, commented out for now
-            # if start node and end node present and linked (a tuple of the two exists) update pheromone levels to given float
+        # if (start_nodeID, end_nodeID) in self.pheromone_levels: # todo: not working as intended, commented out for now
+        # if start node and end node present and linked (a tuple of the two exists) update pheromone levels to given float
         self.pheromone_levels[sorted_edges] += new_level
 
-        #else:
-            #raise Exception("An edge between", start_nodeID, "and", end_nodeID, "does not exist.")
+        # else:
+        # raise Exception("An edge between", start_nodeID, "and", end_nodeID, "does not exist.")
 
     # todo: should this not be in the aco class?
     # todo: review maths behind this (pheromone evaporation rule) CHANGE THIS FUNCTION
@@ -124,6 +123,37 @@ class Graph:
         print("Dictionary Keys:", self.nodes_dict.keys())
         print("Dictionary Values:", self.nodes_dict.values())
 
-
     def print_pheromone_levels(self):
         print("Pheromones:", self.pheromone_levels)
+
+
+    # returns a list of items which are related to each other including some novel options due to random spawns
+    # use case: a user wants a list of related content within a specific genre
+    # addresses cold start!
+    def extract_global_recommendations(self, pheromone_threshold: float = 0.1, top_n: int = 10):
+        # Step 1: Identify edges with pheromone levels above the threshold
+        positive_edges = [(edge, self.get_pheromone_level(edge))
+                          for edge in self.edges_dict
+                          if self.get_pheromone_level(edge) > pheromone_threshold]
+
+        # Step 2: Sort these edges by pheromone level in descending order
+        sorted_edges = sorted(positive_edges, key=lambda x: x[1], reverse=True)
+
+        # Step 3: Extract recommendations from these edges
+        recommendations = []
+        for edge, _ in sorted_edges[:top_n]:
+            # Assuming edge is a tuple of (node1, node2)
+            if edge[0] not in recommendations:
+                recommendations.append(edge[0])
+            if edge[1] not in recommendations:
+                recommendations.append(edge[1])
+            if len(recommendations) >= top_n:
+                break
+
+        return recommendations
+
+    # returns a list of items which are related to a given node (starting_node)
+    # use case: a user wants a list of content related to a piece of content he's just consumed
+    def extract_local_recommendations(self):
+        # todo: Return recommendations based on a given node
+        pass

@@ -5,64 +5,29 @@ import pygame
 from src.aco_algorithm.aco import ACO
 from src.utilities.graph import Graph
 from src.utilities.node import Node
+from src.utilities.similarity_df import Similarity_DF
 from src.visualisation.vis import Vis
 
+# Create graph object
 graph = Graph()
 
-import numpy as np
-import pandas as pd
+# Generate synthetic data
+sim_data = Similarity_DF(10)
 
-# generate an example synthetic dataset to be used for an input
-np.random.seed(100)
-# Number of content items
-n_contents = 10
+# Populate graph with generated symmetric similarity matrix
+# Add nodes
+for content_id in sim_data.similarity_df.index:
+    graph.add_node(Node(content_id))
 
-# Simulate some content items, creates a list of content item names
-content_items = [f"Content_{i+1}" for i in range(n_contents)]
+# Add edges, based on similarity threshold (optional)
+for i, content_id in enumerate(sim_data.similarity_df.index):
+    for j, related_content_id in enumerate(sim_data.similarity_df.columns):
+        if sim_data.similarity_df.iloc[i, j] > sim_data.similarity_threshold and i != j:
+            similarity_score = sim_data.similarity_df.iloc[i, j]
+            # Transform to distance (make items with large similarity values shorter paths)
+            distance = 1 - similarity_score
+            graph.add_edge(content_id, related_content_id, similarity_score)
 
-# Generate random similarity scores between content items (0 to 1)
-# For simplicity, make the similarity matrix symmetric and set the diagonal to 0 (self-similarity ignored)
-similarity_scores = np.random.rand(n_contents, n_contents)
-similarity_scores = (similarity_scores + similarity_scores.T) / 2
-np.fill_diagonal(similarity_scores, 0)
-
-# Create a DataFrame for better readability
-similarity_df = pd.DataFrame(similarity_scores, index=content_items, columns=content_items)
-
-# Generate user preferences for content items
-# For simplicity, assume we have one user with a preference score for each content item
-user_preferences = np.random.rand(n_contents)
-
-# Create a DataFrame for user preferences
-user_preferences_df = pd.DataFrame(user_preferences, index=content_items, columns=["User_Preference"])
-
-(similarity_df.round(2), user_preferences_df.round(2))
-
-# Step 1 & 2: Create nodes and add them to the graph
-for content_id in similarity_df.index:
-    node = Node(content_id)
-    graph.add_node(node)
-
-# Step 3: Create edges based on content similarities
-# We use a threshold to decide whether to create an edge or not
-similarity_threshold = 0.5  # Example threshold
-
-for i, content_id in enumerate(similarity_df.index):
-    for j, related_content_id in enumerate(similarity_df.columns):
-        # Check if similarity score exceeds the threshold and i != j to avoid self-loops
-        if similarity_df.iloc[i, j] > similarity_threshold and i != j:
-            # Here, you can choose to invert the similarity score to represent distance if needed
-            distance = 1 / similarity_df.iloc[i, j]  # Example inversion
-            graph.add_edge(content_id, related_content_id, distance)
-
-
-
-
-
-
-
-
-# We can to converge on scores which are similar, balanced with exploration (should be a some content along the solution path which aren't that relevant, promoting new content)
 
 
 def main():
@@ -70,10 +35,11 @@ def main():
     Vis.generate_node_coordinates(graph)
     visual = Vis()
 
-    aco = ACO(graph, 1)
+    aco = ACO(graph, 5)
     iteration = 0
+
     # setup code for pygame loop
-    while iteration < 10000:
+    while iteration < 2000:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -100,12 +66,7 @@ def main():
                 ant.set_target_node(next_node)
 
                 # ---------------- TESTING PHEROMONE DEPOSITING
-                # satisfied when ant reaches its target and previous node is not none (ant has not just spawned)
-                if ant.get_previous_node() is not None:
-                    graph.evaporate(0.05)
 
-                iteration += 1
-                print(iteration)
 
                 # if the ant has travelled to a new node, update pheromones on the edge
                 if path_length != 0:    # if ant has travelled (path variable length larger than 0)
@@ -117,6 +78,15 @@ def main():
                     graph.update_pheromones(current_node, previous_node, new_pheromone_level)
 
                     graph.print_pheromone_levels()
+                    # satisfied when ant reaches its target and previous node is not none (ant has not just spawned)
+
+
+                if ant.get_previous_node() is not None:
+                    graph.evaporate(0.05)
+
+                iteration += 1
+                print(iteration)
+
 
 
         # Clear the screen
@@ -129,6 +99,7 @@ def main():
         # Update the display
         visual.update()
 
+    print(graph.extract_global_recommendations())
     pygame.quit()
 
 if __name__ == '__main__':
