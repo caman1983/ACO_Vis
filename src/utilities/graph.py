@@ -130,27 +130,28 @@ class Graph:
     # returns a list of items which are related to each other including some novel options due to random spawns
     # use case: a user wants a list of related content within a specific genre
     # addresses cold start!
-    def extract_global_recommendations(self, pheromone_threshold: float = 0.1, top_n: int = 10):
-        # Step 1: Identify edges with pheromone levels above the threshold
-        positive_edges = [(edge, self.get_pheromone_level(edge))
-                          for edge in self.edges_dict
-                          if self.get_pheromone_level(edge) > pheromone_threshold]
+    def extract_global_recommendations(self, top_n: int = 10):
+        # Step 1: Sort all edges by pheromone level in descending order without applying a threshold
+        sorted_edges = sorted(self.edges_dict.items(), key=lambda x: self.get_pheromone_level(x[0]), reverse=True)
 
-        # Step 2: Sort these edges by pheromone level in descending order
-        sorted_edges = sorted(positive_edges, key=lambda x: x[1], reverse=True)
+        # Initialise an empty list for storing unique recommendations
+        unique_recommendations = set()
 
-        # Step 3: Extract recommendations from these edges
-        recommendations = []
-        for edge, _ in sorted_edges[:top_n]:
-            # Assuming edge is a tuple of (node1, node2)
-            if edge[0] not in recommendations:
-                recommendations.append(edge[0])
-            if edge[1] not in recommendations:
-                recommendations.append(edge[1])
-            if len(recommendations) >= top_n:
+        # Step 2: Iterate through sorted edges and collect unique nodes until reaching top_n
+        for edge, _ in sorted_edges:
+            # Add both nodes from the edge if not already in the recommendations
+            unique_recommendations.update(edge)
+
+            # Break the loop if the desired number of recommendations is reached or exceeded
+            if len(unique_recommendations) >= top_n:
                 break
 
+        # Convert the set of unique recommendations back to a list
+        recommendations = list(unique_recommendations)[:top_n]
+
         return recommendations
+
+
 
     # returns a list of items which are related to a given node (starting_node)
     # use case: a user wants a list of content related to a piece of content he's just consumed

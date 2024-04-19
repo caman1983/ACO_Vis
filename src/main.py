@@ -12,7 +12,7 @@ from src.visualisation.vis import Vis
 graph = Graph()
 
 # Generate synthetic data
-sim_data = Similarity_DF(20)
+sim_data = Similarity_DF(5)
 
 # Populate graph with generated symmetric similarity matrix
 # Add nodes
@@ -52,7 +52,7 @@ def main():
     iteration = 0
 
     # setup code for pygame loop
-    while iteration < 5000:
+    while iteration < 100:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -90,7 +90,7 @@ def main():
 
                     graph.update_pheromones(current_node, previous_node, new_pheromone_level)
 
-                    graph.print_pheromone_levels()
+                    #graph.print_pheromone_levels()
                     # satisfied when ant reaches its target and previous node is not none (ant has not just spawned)
 
 
@@ -98,9 +98,7 @@ def main():
                     graph.evaporate(0.05)
 
                 iteration += 1
-                print(iteration)
-
-            #HELLOO
+                print("Iteration:",iteration)
 
         # Clear the screen
         visual.clear_screen()
@@ -112,7 +110,11 @@ def main():
         # Update the display
         visual.update()
 
-    print(graph.extract_global_recommendations())
+    recommendations = graph.extract_global_recommendations()
+
+    avg_score = aco.average_similarity(recommendations, sim_data)
+    print(f"Average Similarity Score: {avg_score}")
+
     pygame.quit()
 
 if __name__ == '__main__':

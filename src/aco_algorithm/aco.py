@@ -13,11 +13,12 @@ Structure:
 """
 import random
 from typing import List
+import numpy as np
 
 from src.aco_algorithm.ant import Ant
 from src.utilities.graph import Graph
 
-
+#RENAME THIS CLASS? todo: RENAME CLASS
 class ACO:
     def __init__(self, graph: Graph, num_ants: int) -> None:
         self.graph = graph
@@ -28,11 +29,18 @@ class ACO:
         # [Ant(graph) for _ in range(num_ants)] <- create an ant object for total number of ants
 
         # Creates an ant object equal to the number in num_ants
-        #self.ants: List[Ant] = [Ant(graph, random.choice(list(graph.nodes_dict.keys()))) for _ in range(num_ants)]
-        self.ants: List[Ant] = [Ant(graph, "Content_1") for _ in range(num_ants)]   #todo: hardcoded for all ants to start in node1, FOR NOW
+        self.ants: List[Ant] = [Ant(graph, random.choice(list(graph.nodes_dict.keys()))) for _ in range(num_ants)]
+        #self.ants: List[Ant] = [Ant(graph, "Content_1") for _ in range(num_ants)]   #todo: hardcoded for all ants to start in node1, FOR NOW
 
 
-
+    # comment
+    # Calculate average similarity score for the recommendations
+    def average_similarity(self, recommendations, sim_data):
+        scores = []
+        for i in range(len(recommendations)):
+            for j in range(i + 1, len(recommendations)):
+                scores.append(sim_data.similarity_df.loc[recommendations[i], recommendations[j]])
+        return np.mean(scores)
 
 
 

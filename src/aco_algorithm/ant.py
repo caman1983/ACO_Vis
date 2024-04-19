@@ -118,8 +118,8 @@ class Ant:
         # runs upon end of for nodes loop
         # todo: review and comment!!!!!
         normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
-        print("------------------------------------")
-        print("Traversal probabilities:", normalised_probabilities) #todo: print trav possibilities
+        #print("------------------------------------")
+        #print("Traversal probabilities:", normalised_probabilities) #todo: print trav possibilities
 
         return normalised_probabilities
         # todo: returns an empty list if all nodes are visited OR there is nowhere else the ant can go
@@ -138,9 +138,9 @@ class Ant:
             # Update ant state
             self.path.append(next_node)  # add ants next node to path
 
-            print("Path:", self.path)  #todo: print path
+            #print("Path:", self.path)  #todo: print path
 
-            print("Next target:", next_node) #todo: print next target
+            #print("Next target:", next_node) #todo: print next target
 
             return next_node
 
@@ -156,14 +156,6 @@ class Ant:
                 # todo: should return next node, target node is set in main program loop (check main)
                 self.set_target_node(backtrack_node)
                 return self.__target_node_id
-
-            else:  # todo: why does this else statement run when all nodes are visited?? - if len cond is not satisfied     DOES NOT RUN
-                print("all nodes have been visited, returning home...")
-                # if ant has nowhere to go, set target node to home node and return home node
-                self.set_target_node(self.STARTING_NODE_ID)
-
-                return self.__target_node_id
-                # raise Exception(f"Ant at {self.current_node} has no unvisited neighbors to move to.")
 
 
     # todo: should this be in ant or graph
