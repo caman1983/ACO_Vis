@@ -27,30 +27,33 @@ class Vis:
         self.GREEN = (0, 255, 0)
         self.BLUE = (0, 0, 255)
 
+        self.font = pygame.font.Font(None, 24)  # Default font, size 24
+
+
         # Clock for controlling frame rate
         self.clock = pygame.time.Clock()
+
+
 
 
     # draw graph
     def draw_graph(self, graph: Graph):
         self.screen.fill(self.BLACK)
-        # iterate through every item in edges dictionary
-        # edge = key (containing tuple of connected nodes as strings)
-        # distance = pair-values (edge weight between nodes)
-        # draw a line between two nodes coordinates
         for edges, distance in graph.edges_dict.items():
-            # edge = current iteration of tuple of edges
             start_pos = graph.nodes_dict[edges[0]].coordinates
-            # access node dictionary using second element in edges tuple as id, get that nodes coordinates
             end_pos = graph.nodes_dict[edges[1]].coordinates
+            pygame.draw.line(self.screen, self.WHITE, start_pos, end_pos, 1)
 
-            pygame.draw.line(self.screen, self.WHITE, start_pos, end_pos, 1)  # Draw line for edge
-
-        # draw a circle at nodes coordinates
         for node_id, node in graph.nodes_dict.items():
-            pygame.draw.circle(self.screen, self.RED, node.coordinates, 5)  # Draw node as a circle
+            pygame.draw.circle(self.screen, self.RED, node.coordinates, 20)  # Increased node size for visibility
 
-        # update display
+            # Render the node ID text
+            text_surface = self.font.render(str(node_id), True, self.WHITE)
+            # Calculate text position (centered on the node circle)
+            text_pos = (node.coordinates[0] - text_surface.get_width() / 2,
+                        node.coordinates[1] - text_surface.get_height() / 2)
+            self.screen.blit(text_surface, text_pos)
+
         pygame.display.flip()
 
     # draw ants by iterating through ants object list in ACO class

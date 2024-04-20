@@ -12,7 +12,7 @@ from src.visualisation.vis import Vis
 graph = Graph()
 
 # Generate synthetic data
-sim_data = Similarity_DF(5)
+sim_data = Similarity_DF(20)
 
 # Populate graph with generated symmetric similarity matrix
 # Add nodes
@@ -29,18 +29,6 @@ for i, content_id in enumerate(sim_data.similarity_df.index):
             rounded_distance = round(distance, 2)
             graph.add_edge(content_id, related_content_id, rounded_distance)
 
-# graph = Graph()
-# node1 = Node("1")
-# node2 = Node("2")
-# node3 = Node("3")
-#
-# graph.add_node(node1)
-# graph.add_node(node2)
-# graph.add_node(node3)
-#
-# graph.add_edge("1", "2", 6)
-# graph.add_edge("1", "3", 4)
-
 
 
 def main():
@@ -52,7 +40,7 @@ def main():
     iteration = 0
 
     # setup code for pygame loop
-    while iteration < 100:
+    while iteration < 2000:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -68,7 +56,7 @@ def main():
             # when ant has reached its target, set a new one
             elif not ant.has_target_node():
                 # get probabilities based on probability decision rule
-                probabilities = ant.get_probabilities()
+                probabilities = ant.get_probabilities(70,1)
 
                 # must be here as calling get_next_node removes current node from path if nowhere to go
                 path_length = ant.get_path_length()
@@ -95,7 +83,7 @@ def main():
 
 
                 if ant.get_previous_node() is not None:
-                    graph.evaporate(0.05)
+                    graph.evaporate(0.001)
 
                 iteration += 1
                 print("Iteration:",iteration)
@@ -110,10 +98,19 @@ def main():
         # Update the display
         visual.update()
 
-    recommendations = graph.extract_global_recommendations()
+    recommendations = aco.extract_global_recommendations()
+    avg_sim_score = aco.average_similarity(recommendations, sim_data)
+    div_score = aco.calculate_diversity_score(recommendations, sim_data)
+    coverage = aco.calculate_coverage(len(graph.nodes_dict), recommendations)
 
-    avg_score = aco.average_similarity(recommendations, sim_data)
-    print(f"Average Similarity Score: {avg_score}")
+    print("-" * 100)
+    print("Recommendations: ", recommendations)
+
+    print("Average Similarity Score:", avg_sim_score)
+    print("Diversity Score: ", div_score)
+    print("Coverage Score:", coverage, "%")
+
+    graph.print_pheromone_levels()
 
     pygame.quit()
 

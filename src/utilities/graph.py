@@ -130,27 +130,6 @@ class Graph:
     # returns a list of items which are related to each other including some novel options due to random spawns
     # use case: a user wants a list of related content within a specific genre
     # addresses cold start!
-    def extract_global_recommendations(self, top_n: int = 10):
-        # Step 1: Sort all edges by pheromone level in descending order without applying a threshold
-        sorted_edges = sorted(self.edges_dict.items(), key=lambda x: self.get_pheromone_level(x[0]), reverse=True)
-
-        # Initialise an empty list for storing unique recommendations
-        unique_recommendations = set()
-
-        # Step 2: Iterate through sorted edges and collect unique nodes until reaching top_n
-        for edge, _ in sorted_edges:
-            # Add both nodes from the edge if not already in the recommendations
-            unique_recommendations.update(edge)
-
-            # Break the loop if the desired number of recommendations is reached or exceeded
-            if len(unique_recommendations) >= top_n:
-                break
-
-        # Convert the set of unique recommendations back to a list
-        recommendations = list(unique_recommendations)[:top_n]
-
-        return recommendations
-
 
 
     # returns a list of items which are related to a given node (starting_node)

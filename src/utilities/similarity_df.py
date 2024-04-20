@@ -13,7 +13,7 @@ class Similarity_DF:
         """
         Generates a symmetric similarity matrix with self-similarity set to 0.
         """
-        np.random.seed(100)  # Ensure reproducibility
+        np.random.seed(10)  # Ensure reproducibility
         similarity_scores = np.random.rand(self.n_contents, self.n_contents)
         similarity_scores = (similarity_scores + similarity_scores.T) / 2
         similarity_scores = np.round(similarity_scores, 2)

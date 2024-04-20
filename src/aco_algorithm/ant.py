@@ -34,7 +34,7 @@ class Ant:
         self.__previous_node = None  # Track the previous node to avoid immediate backtracking
         self.__current_position = self.graph.get_node_coordinates(start_node)  # current x,y coordinate values of ant
         self.__target_node_id = None  # initialise as none as a target has not been selected yet
-        self.__speed = 10
+        self.__speed = 15
 
         #print("Starting node:", self.__current_node) todo: print starting node
 
@@ -82,12 +82,10 @@ class Ant:
     
     
     """
-    def get_probabilities(self) -> list[tuple[str, float]]:
+    def get_probabilities(self, alpha, beta) -> list[tuple[str, float]]:
         probabilities = []
         total = 0
         # todo: hardcoded for now, amend later
-        alpha = 1
-        beta = 1
 
         # get list of connected nodes to current node, excluding current and previous node
         connected_nodes = self.graph.get_connected_nodes(self.__current_node, self.__previous_node)
@@ -103,13 +101,14 @@ class Ant:
 
             # Invert back to promote low cost paths
             desirability = 1 / distance
-            rounded_desirability = round(desirability, 2)
+
             # todo better implement
             if distance <= 0:
                 raise Exception("Critical error: Distance between nodes cannot be less then zero")
 
             # times pheromone level by inverse of distance
-            node_potential = pheromone_level * rounded_desirability
+            node_potential = (pheromone_level ** alpha) * (desirability ** beta)
+
             probabilities.append((node, node_potential))
 
             # summation of all node probabilities
@@ -119,7 +118,7 @@ class Ant:
         # todo: review and comment!!!!!
         normalised_probabilities = [(node_id, round(probability / total, 2)) for node_id, probability in probabilities]
         #print("------------------------------------")
-        #print("Traversal probabilities:", normalised_probabilities) #todo: print trav possibilities
+        print("Traversal probabilities:", normalised_probabilities) #todo: print trav possibilities
 
         return normalised_probabilities
         # todo: returns an empty list if all nodes are visited OR there is nowhere else the ant can go
