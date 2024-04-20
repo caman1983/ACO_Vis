@@ -40,7 +40,7 @@ def main():
     iteration = 0
 
     # setup code for pygame loop
-    while iteration < 2000:
+    while iteration < 5000:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
