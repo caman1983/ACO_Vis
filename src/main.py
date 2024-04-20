@@ -91,6 +91,8 @@ def main():
         # Clear the screen
         visual.clear_screen()
 
+        #FINISHED!!!
+
         # Draw the graph
         visual.draw_graph(graph)
         visual.draw_ants(aco)
