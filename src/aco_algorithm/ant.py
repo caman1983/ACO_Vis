@@ -1,6 +1,6 @@
 import random
 
-from src.utilities.graph import Graph
+from src.graph_components.graph import Graph
 
 # THE WHOLE IDEA IS TO PROMOTE LOW COST PATHS
 

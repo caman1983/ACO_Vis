@@ -2,7 +2,7 @@
 Represents a graph data structure
 """
 from typing import Dict, Tuple, List
-from src.utilities.node import Node
+from src.graph_components.node import Node
 
 
 class Graph:
