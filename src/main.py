@@ -44,7 +44,7 @@ def main():
     iteration = 0
 
     # Main simulation loop
-    while running and iteration < 1000:
+    while running and iteration < 5000:
         # Handle Pygame events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -94,9 +94,7 @@ def main():
         visualiser.update()
 
         # After the main loop, extract and display the recommendations
-    a = EvalMetrics(graph)
-    recommendations = a.extract_global_recommendations()
-    #recommendations = EvalMetrics.extract_global_recommendations(graph)
+    recommendations = EvalMetrics.extract_global_recommendations(graph)
     avg_similarity_score = EvalMetrics.average_similarity(recommendations, sim_data)
     diversity_score = EvalMetrics.calculate_diversity_score(recommendations, sim_data)
     coverage_score = EvalMetrics.calculate_coverage(len(graph.nodes_dict), recommendations)

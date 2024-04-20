@@ -49,39 +49,16 @@ class EvalMetrics:
         coverage = (unique_recommended_items_count / total_items_count) * 100
         return coverage
 
-    # @staticmethod
-    # def extract_global_recommendations(graph, pheromone_threshold=1):
-    #     # Calculate the pheromone threshold based on the specified percentile
-    #     pheromone_values = list(graph.pheromone_levels.values())
-    #     if not pheromone_values:  # Ensure there are pheromone values to calculate the threshold
-    #         return []
-    #
-    #     # Filter edges by the dynamically calculated pheromone threshold
-    #     filtered_edges = [(edge, level) for edge, level in graph.pheromone_levels.items() if
-    #                       level >= pheromone_threshold]
-    #
-    #     # Sort filtered edges by pheromone level in descending order
-    #     sorted_edges = sorted(filtered_edges, key=lambda x: x[1], reverse=True)
-    #
-    #     # Extract unique nodes from the filtered and sorted edges
-    #     recommendations = set()
-    #     for edge, _ in sorted_edges:
-    #         recommendations.update(edge)
-    #
-    #     return list(recommendations)
-
-
-
-
-
-    def extract_global_recommendations(self, pheromone_threshold=1):
+    @staticmethod
+    def extract_global_recommendations(graph, pheromone_threshold=1):
         # Calculate the pheromone threshold based on the specified percentile
-        pheromone_values = list(self.graph.pheromone_levels.values())
+        pheromone_values = list(graph.pheromone_levels.values())
         if not pheromone_values:  # Ensure there are pheromone values to calculate the threshold
             return []
 
         # Filter edges by the dynamically calculated pheromone threshold
-        filtered_edges = [(edge, level) for edge, level in self.graph.pheromone_levels.items() if level >= pheromone_threshold]
+        filtered_edges = [(edge, level) for edge, level in graph.pheromone_levels.items() if
+                          level >= pheromone_threshold]
 
         # Sort filtered edges by pheromone level in descending order
         sorted_edges = sorted(filtered_edges, key=lambda x: x[1], reverse=True)
@@ -92,3 +69,7 @@ class EvalMetrics:
             recommendations.update(edge)
 
         return list(recommendations)
+
+
+
+
