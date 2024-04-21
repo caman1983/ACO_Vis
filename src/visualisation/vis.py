@@ -2,20 +2,18 @@ import math
 
 import pygame
 from src.graph_components.graph import Graph
-from src.aco_algorithm.ant_manager import AntManager
+from src.entities.ant_manager import AntManager
 
 
 class Visualiser:
     """
     Provides visualisation for the Ant Colony Optimisation (ACO) process using Pygame.
     """
-
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
     RED = (255, 0, 0)
     GREEN = (0, 255, 0)
     BLUE = (0, 0, 255)
-
     def __init__(self, window_size=(800, 600), window_title="ACO Visualiser"):
         """
         Initialises the ACO visualiser with a window size and title.
@@ -42,7 +40,7 @@ class Visualiser:
             pygame.draw.line(self.screen, self.WHITE, start_pos, end_pos, 1)
         # Draw nodes
         for node_id, node in graph.nodes_dict.items():
-            pygame.draw.circle(self.screen, self.RED, node.coordinates, 20)
+            pygame.draw.circle(self.screen, self.RED, node.coordinates, 15)
             text_surface = self.font.render(str(node_id), True, self.WHITE)
             text_pos = node.coordinates[0] - text_surface.get_width() // 2, node.coordinates[
                 1] - text_surface.get_height() // 2
@@ -96,3 +94,7 @@ class Visualiser:
 
             # Update the node's position in the graph using the calculated coordinates
             graph.nodes_dict[node_id].set_coordinates(int(x), int(y))
+
+
+
+

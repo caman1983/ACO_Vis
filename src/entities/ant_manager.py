@@ -1,5 +1,5 @@
 from typing import List
-from src.aco_algorithm.ant import Ant
+from src.entities.ant import Ant
 from src.graph_components.graph import Graph
 
 

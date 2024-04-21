@@ -26,3 +26,6 @@ class Node:
         Returns a representation of the node, showing its ID and coordinates.
         """
         return f"Node(id={self.id}, coordinates={self.coordinates})"
+
+
+

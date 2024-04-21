@@ -1,15 +1,13 @@
 import pygame
 
-from src.aco_algorithm.ant_manager import AntManager
-from src.aco_algorithm.eval_metrics import EvalMetrics
+from src.entities.ant_manager import AntManager
+from src.utilities.eval_metrics import EvalMetrics
 from src.graph_components.graph import Graph
 from src.graph_components.node import Node
 from src.utilities.similarity_df import SimilarityData
 from src.visualisation.vis import Visualiser
 
 # Setup code
-
-
 # Create graph object
 graph = Graph()
 
@@ -37,7 +35,7 @@ def main():
     Visualiser.generate_node_coordinates(graph)
     visualiser = Visualiser()
 
-    ant_manager = AntManager(graph, 50, "Content_1")  # Initialise ACO  with the graph and number of ants
+    ant_manager = AntManager(graph, 20, "Content_1")  # Initialise ACO  with the graph and number of ants
 
     # Flags to control the main simulation loop
     running = True
@@ -49,21 +47,17 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
             # Draw ants on first frame
             visualiser.draw_ants(ant_manager)
-            # Process each ant's movement and state
 
         # Process each ant's movement and state
         for ant in ant_manager.ants:
             if ant.has_target_node():
                 ant.move_toward_target()
-
             # If ant has reached target node
             elif not ant.has_target_node():
                 # Generate path selection probabilities
-                probabilities = ant.get_probabilities(70, 1)
-
+                probabilities = ant.get_probabilities(1, 5)
                 path_length = ant.get_path_length()
                 next_node = ant.get_next_node(probabilities)
                 ant.set_target_node(next_node)
@@ -76,7 +70,7 @@ def main():
                     graph.update_pheromones(current_node, previous_node, new_pheromone_level)
 
                 # Evaporate pheromones slightly after each iteration
-                if ant.get_previous_node() is not None:  # combine with if path_length statment?
+                if ant.get_previous_node() is not None:
                     graph.evaporate(0.001)
 
                     # Increment iteration counter and log progress
@@ -93,7 +87,7 @@ def main():
         # Update the display with the new frame
         visualiser.update()
 
-        # After the main loop, extract and display the recommendations
+    # After the main loop, extract and display the recommendations and evaluation metrics
     recommendations = EvalMetrics.extract_global_recommendations(graph)
     avg_similarity_score = EvalMetrics.average_similarity(recommendations, sim_data)
     diversity_score = EvalMetrics.calculate_diversity_score(recommendations, sim_data)
@@ -112,3 +106,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+

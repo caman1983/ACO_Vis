@@ -32,3 +32,6 @@ class SimilarityData:
         similarity_scores = np.round(similarity_scores, 2)  # Round scores for readability
 
         return pd.DataFrame(similarity_scores, index=self.content_items, columns=self.content_items)
+
+
+
